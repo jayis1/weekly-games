@@ -6,7 +6,7 @@ A collection of small, self-contained games: a fresh concept each week, using th
 
 | Cycle | Game | Engine | Status |
 | --- | --- | --- | --- |
-| 2026-W37 | [The Last Inn](games/2026-W37-the-last-inn/) | Self-contained HTML/CSS/JavaScript | Early kickoff development preview — not released |
+| 2026-W37 | [The Last Inn](games/2026-W37-the-last-inn/) | Self-contained HTML/CSS/JavaScript | Early kickoff preview; witness-specific feedback tested — not released |
 
 Every weekly game includes meaningful NPC conversations through the player’s own AI provider. The Last Inn begins with three witnesses, evidence and trust, and a consequential final decision. Offline scripted rehearsal is explicitly labeled and is not live AI. Provider-protocol tests and live-model tests are reported separately.
 

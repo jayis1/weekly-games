@@ -31,6 +31,18 @@ test('character knowledge and memory stay bounded and separate',()=>{
  m=G.messages(s,'mara','x'.repeat(900),Array.from({length:20},()=>({role:'user',content:'y'.repeat(1000)})),'ledger');
  assert(m.length<=8);assert(m.at(-1).content.length<900);assert(JSON.stringify(m).includes(G.NPCS.mara.secret));
 });
+test('witness feedback distinguishes listening, mismatched evidence and confirmed testimony',()=>{
+ const s=G.create();
+ assert.match(G.feedback(s,'ivo',''),/Ivo.*trust/i);
+ G.converse(s,'ivo','');G.inspect(s,'ledger');G.inspect(s,'scarf');
+ assert.match(G.feedback(s,'ivo',''),/Ivo.*listening.*matching clue/i);
+ assert.match(G.feedback(s,'ivo','ledger'),/Ivo.*does not connect/i);
+ assert.match(G.feedback(s,'ivo','scarf'),/Ivo.*confirmed/i);
+ G.converse(s,'ivo','scarf');
+ assert.match(G.feedback(s,'ivo','scarf'),/already.*notebook/i);
+ assert.throws(()=>G.feedback(s,'unknown',''));
+});
+
 test('endpoint allowlist prevents credential URLs, insecure nonlocal destinations and redirects',()=>{
  for(const url of ['http://example.com/v1/chat/completions','https://user:pass@host/x','https://host/x?key=x','file:///x','https://host/x#x'])assert.throws(()=>A.endpoint(url));
  assert.equal(A.endpoint('http://localhost:1234/v1/chat/completions'),'http://localhost:1234/v1/chat/completions');

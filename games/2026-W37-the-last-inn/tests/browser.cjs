@@ -34,6 +34,16 @@ const http=require('node:http');
     await page.waitForFunction(()=>!document.querySelector('#send').disabled);
    }
   }
+  await page.locator('[data-clue="ledger"]').click();
+  await page.locator('#npc').selectOption('ivo');await page.locator('#send').click();
+  assert.match(await page.locator('#notice').innerText(),/Ivo.*trust/i);
+  await page.locator('#evidence').selectOption('ledger');await page.locator('#send').click();
+  assert.match(await page.locator('#notice').innerText(),/Ivo.*does not connect/i);
+  assert.match(await page.locator('#journal').innerText(),/0\/3/);
+  for(let i=0;i<9;i++)await page.locator('#send').click();
+  assert.match(await page.locator('#notice').innerText(),/The last bell/);
+  assert.equal(await page.locator('#send').isDisabled(),true);
+  await page.locator('#restart').click();
   await fullLoop();assert.match(await page.locator('#journal').innerText(),/courier is alive/);
   await page.locator('#suspect').selectOption('silas');await page.locator('#choice').selectOption('rescue');await page.locator('#decide').click();
   assert.match(await page.locator('#ending').innerText(),/Truth & mercy/);

@@ -56,9 +56,9 @@
     reply=await request;
    }
    if(ticket!==generation)return;
-   const before=state.testimony.length;G.converse(state,id,evidence);
+   const feedback=G.feedback(state,id,evidence);G.converse(state,id,evidence);
    history[id]=[...history[id],{role:'user',content:text},{role:'assistant',content:reply}].slice(-6);
-   note(state.testimony.length>before?'Confirmed testimony added to your notebook. Engine facts, not model instructions.':'A beat passes. Trust earned. Present a matching clue on your next question.');
+   note(state.ending?G.ENDINGS[state.ending]:feedback);
   }catch(e){if(ticket===generation)note(e.message);}
   finally{
    if(config?.mode==='live')$('destination').textContent=`BYO AI destination: ${config.endpoint} · Model: ${config.model} · ${client.used}/24 attempts used.`;

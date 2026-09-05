@@ -27,7 +27,7 @@ Investigate three fixed clues at a stormbound inn; converse with three distinct 
 - No human playtest yet.
 
 ## Next bounded task
-Monday September 7: RESUME this exact project. Exercise an authorized keyless local model if one is made available (otherwise retain explicit live-test blocker), then improve witness-specific conversational feedback and clarity without expanding the three-clue scope. Human playtest remains necessary before release.
+Monday September 7: RESUME this exact project. Exercise an authorized keyless local model if one is made available (otherwise retain explicit live-test blocker), then exercise provider knowledge fidelity and player comprehension of the clue-to-witness puzzle without expanding the three-clue scope. Witness-specific conversational feedback is implemented in the kickoff-resume increment below. Human playtest remains necessary before release.
 
 ## Kickoff completion evidence — 2026-09-05
 - Implemented start, 12-beat investigation deadline, three unique inspectable clues, three distinct NPCs, listening/trust then matching-evidence testimony, five engine-owned endings, final accusation/rescue choice and clean restart. No real-time timer; pausing requires no action.
@@ -51,3 +51,15 @@ Monday September 7: RESUME this exact project. Exercise an authorized keyless lo
 - QA images: ignored `artifacts/last-inn-desktop.png` and `artifacts/last-inn-mobile.png`. Build archives/caches/test browser excluded from Git.
 - Source destination: `git@github.com:jayis1/weekly-games.git`, branch `main`. Tested source checkpoint `191c7b91ded836c30399db5ddc0aa72bf238675e` committed and pushed successfully. `git ls-remote origin refs/heads/main` returned that exact SHA, matching local HEAD. This documentation-only follow-up records the verified source checkpoint; its own push is verified in the final cron report.
 - GitHub Release upload blocked: `gh auth status` reports not logged into any hosts. SSH source access does not supply API authentication. No Release/tag created during early kickoff.
+
+## Repeated kickoff resumed — 2026-09-05 21:18 UTC
+- Acquired exclusive studio lock with owner `kickoff-2026-09-05`; read existing tracker and current.json. Actual UTC ISO week W36, bootstrap cycle W37. Resumed existing project; current.json already has correct identity/status and was preserved. No duplicate project or release created.
+- Reverified Node v22.22.3/npm 10.9.8 and actual Chromium complete gameplay from disk before changes: baseline 9/9 core tests and browser suite passed. Engine/export remains self-contained HTML/CSS/JavaScript, no purchase or login.
+- Bounded improvement: canonical witness-specific feedback now distinguishes first trust, listening without evidence, mismatched evidence, newly confirmed testimony and already-recorded testimony. Dawn ending takes precedence over routine feedback. No additional API calls or model-controlled state; all three NPCs retain the existing BYO-AI connection.
+- RED: `npm test` failed exactly on missing `G.feedback` (9 pass, 1 fail). GREEN: `npm test` now **10/10 pass** including feedback branches; all earlier mechanics/provider tests retained.
+- `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:browser`: **PASS**, including new actual-control trust/mismatch feedback checks, unchanged notebook after wrong evidence, deadline feedback/disabled send, restart and full winning flows. Existing all-three-NPC local HTTP fixture, key isolation, XSS, failure/cancel/recovery and mobile checks pass; no JS page errors.
+- Independent read-only review **passed=true**, no security concerns or logic errors. Added reviewer-suggested trusted/no-evidence and final-beat regression coverage; no production code changed after approval. `git diff --check`: clean.
+- `python3 artifacts/package-resume.py`: archive CRC and all six extracted runtime/docs files byte-for-byte comparison **PASS**. New preview: `/root/weekly-games/artifacts/2026-W37-the-last-inn-kickoff-feedback.zip`, **14,505 bytes**; SHA-256 `613743646086ee2115fbd7e13150fb0a94ca0d17f828b3c894a7b9f64ad9f8f3`.
+- `INN_BUILD=/root/weekly-games/artifacts/feedback-check/the-last-inn/index.html PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:browser`: **PASS** full gameplay suite on extracted preview.
+- Live AI testing **NOT RUN**, no authorized provider/budget supplied; local HTTP fixture is synthetic, not live-model evidence. No human playtest. `gh auth status` reconfirmed no logged-in hosts; Release upload remains blocked.
+- `git fetch origin` succeeded via approved SSH remote. This increment is to be committed/pushed to `main`; exact live remote SHA verification is reported in the cron final response. Root catalog updated; old preview preserved. Monday resumes W37 for authorized live-model validation and bounded puzzle clarity work.
