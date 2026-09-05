@@ -1,0 +1,29 @@
+# Local studio state
+/AGENTS.md
+/current.json
+/.worker-lock/
+/artifacts/
+# Secrets and local environments
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.venv/
+venv/
+# Engine caches and dependencies
+.godot/
+.import/
+node_modules/
+__pycache__/
+*.pyc
+Library/
+Temp/
+Obj/
+# Generated output
+build/
+builds/
+dist/
+exports/
+*.log
+.DS_Store
