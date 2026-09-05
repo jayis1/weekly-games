@@ -1,0 +1,12 @@
+{
+  "name": "weekly-games-studio",
+  "private": true,
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test games/2026-W37-the-last-inn/tests/core.test.cjs",
+    "test:browser": "node games/2026-W37-the-last-inn/tests/browser.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

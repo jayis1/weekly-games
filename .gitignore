@@ -15,6 +15,7 @@ venv/
 .godot/
 .import/
 node_modules/
+.cache/
 __pycache__/
 *.pyc
 Library/

@@ -4,7 +4,13 @@ A collection of small, self-contained games: a fresh concept each week, using th
 
 ## Game catalog
 
-No weekly games released yet. Each game will have its own source, controls, setup instructions, development tracker, and known limitations.
+| Cycle | Game | Engine | Status |
+| --- | --- | --- | --- |
+| 2026-W37 | [The Last Inn](games/2026-W37-the-last-inn/) | Self-contained HTML/CSS/JavaScript | Early kickoff development preview — not released |
+
+Every weekly game includes meaningful NPC conversations through the player’s own AI provider. The Last Inn begins with three witnesses, evidence and trust, and a consequential final decision. Offline scripted rehearsal is explicitly labeled and is not live AI. Provider-protocol tests and live-model tests are reported separately.
+
+No weekly games released yet. The first cycle starts early September 5 and resumes September 7; it targets the September 12 playable release, not an early release claim.
 
 ## Layout
 
