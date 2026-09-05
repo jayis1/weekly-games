@@ -54,7 +54,10 @@ npm ci
 PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npx playwright install chromium
 npm test
 PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:browser
+PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:qa
 ```
+
+The feature-freeze QA suite uses explicit scripted rehearsal and actual browser controls to exercise all five endings, keyboard start, idle turn-based pause, free clue rereading, blank-question rejection, disabled ending controls, restart and reload reset. It checks page/modal widths at 320, 390, 768 and 1280 pixels and reports observed load time, long tasks and heap usage after 50 restart/inspect cycles. These headless Chromium measurements are diagnostics, not a universal performance guarantee or human playtest. No audio system is included; adding one is outside this feature freeze.
 
 To test an extracted package, set `INN_BUILD` to its absolute `index.html` path when running `npm run test:browser`. Full-screen test images go to ignored `artifacts/`.
 
