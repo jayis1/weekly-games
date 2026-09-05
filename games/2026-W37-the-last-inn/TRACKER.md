@@ -49,5 +49,5 @@ Monday September 7: RESUME this exact project. Exercise an authorized keyless lo
 - SHA-256: `5a945ea708c9539e7fa8cd0ea3f1f1b7a3674ac4256e8ebfdca49de0b50d1e9f`.
 - Launch: extract all files, open `the-last-inn/index.html`; choose explicit rehearsal or configure a compatible CORS-enabled provider. README includes launch, controls, protocol, data disclosure, licenses/asset provenance and known limitations.
 - QA images: ignored `artifacts/last-inn-desktop.png` and `artifacts/last-inn-mobile.png`. Build archives/caches/test browser excluded from Git.
-- Source destination: `git@github.com:jayis1/weekly-games.git`, branch `main`. Tested source checkpoint and live remote SHA verification pending below.
+- Source destination: `git@github.com:jayis1/weekly-games.git`, branch `main`. Tested source checkpoint `191c7b91ded836c30399db5ddc0aa72bf238675e` committed and pushed successfully. `git ls-remote origin refs/heads/main` returned that exact SHA, matching local HEAD. This documentation-only follow-up records the verified source checkpoint; its own push is verified in the final cron report.
 - GitHub Release upload blocked: `gh auth status` reports not logged into any hosts. SSH source access does not supply API authentication. No Release/tag created during early kickoff.
