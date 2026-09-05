@@ -67,6 +67,22 @@
  };
  $('cancel').onclick=()=>client.cancel();
  $('restart').onclick=()=>{generation++;client.cancel();state=G.create();history={mara:[],silas:[],ivo:[]};$('clue-text').textContent='The rain drums on shuttered windows.';note('A new night. Conversation memories cleared; session request budget is unchanged.');render();};
- $('decide').onclick=()=>{try{G.decide(state,$('suspect').value,$('choice').value);note('The night is over. Restart to explore another decision.');render();$('ending').tabIndex=-1;$('ending').focus();}catch(e){note(e.message);}};
+ const review=$('decision-review');let pendingDecision=null;
+ function dismissDecision(){pendingDecision=null;review.close();$('decide').focus();}
+ $('keep-investigating').onclick=dismissDecision;
+ review.addEventListener('cancel',e=>{e.preventDefault();dismissDecision();});
+ $('decide').onclick=()=>{
+  if(client.busy||state.ending||review.open)return;
+  pendingDecision={suspect:$('suspect').value,choice:$('choice').value};
+  $('decision-summary').textContent=`Hold ${G.NPCS[pendingDecision.suspect].name} responsible. ${pendingDecision.choice==='rescue'?'Lead a rope team to the courier.':'Keep everyone safe inside.'} Confirmed testimony: ${state.testimony.length}/3. ${state.testimony.length<3?'This accusation is unsupported.':'All testimony gathered; weigh the notebook carefully.'}`;
+  review.showModal();$('keep-investigating').focus();
+ };
+ $('confirm-decision').onclick=()=>{
+  if(!review.open||!pendingDecision||client.busy||state.ending)return;
+  try{
+   G.decide(state,pendingDecision.suspect,pendingDecision.choice);pendingDecision=null;review.close();
+   note('The night is over. Restart to explore another decision.');render();$('ending').tabIndex=-1;$('ending').focus();
+  }catch(e){dismissDecision();note(e.message);}
+ };
  render();
 })();
