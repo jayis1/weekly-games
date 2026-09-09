@@ -12,6 +12,14 @@ const path=require('node:path');
   await page.goto('file://'+(process.env.INN_BUILD||path.resolve(__dirname,'../index.html')));
   await page.locator('#start').focus();await page.keyboard.press('Enter');
   assert(await page.locator('#play').isVisible());
+  assert.deepEqual(await page.locator('#case-board li').allInnerTexts(),[
+   'kitchen ledger — clue missing',
+   'severed bell wire — clue missing',
+   'red scarf — clue missing',
+   'Mara Vale — testimony pending',
+   'Silas Reed — testimony pending',
+   'Ivo Finch — testimony pending'
+  ]);
   await page.locator('#mode').selectOption('rehearsal');await page.locator('#apply').click();
   // Turn-based pause: no input means no progress or NPC network activity.
   const clock=await page.locator('#clock').innerText();
@@ -31,8 +39,10 @@ const path=require('node:path');
     await page.locator(`[data-clue="${clue}"]`).click();await page.locator('#npc').selectOption(npc);
     await page.locator('#question').fill('What happened?');await page.locator('#send').click();
     await page.locator('#evidence').selectOption(clue);await page.locator('#send').click();
-   }
-   assert.match(await page.locator('#journal').innerText(),/3\/3/);
+    assert.match((await page.locator('#case-board').innerText()),new RegExp(`${clue==='ledger'?'kitchen ledger':clue==='wire'?'severed bell wire':'red scarf'} — clue found`));
+    assert.match((await page.locator('#case-board').innerText()),new RegExp(`${npc==='mara'?'Mara Vale':npc==='silas'?'Silas Reed':'Ivo Finch'} — testimony confirmed`));
+    }
+    assert.match(await page.locator('#journal').innerText(),/3\/3/);
    assert.equal(await page.locator('#clock').innerText(),'3 beats until dawn');
   }
   for(const [suspect,choice,expected] of [['silas','rescue','Truth & mercy'],['silas','stay','A cold justice'],['mara','rescue','The wrong door']]){

@@ -15,6 +15,12 @@
   for(const id of state.clues)$('evidence').add(new Option(G.CLUES[id].name,id));
   if(state.clues.includes(selected))$('evidence').value=selected;
   const id=$('npc').value,n=G.NPCS[id];$('witness').textContent=`${n.name} · ${n.role} · Trust: ${state.trust[id]===0?'guarded':'listening'}${state.testimony.includes(id)?' · testimony confirmed':''}`;
+  for(const id of ['ledger','wire','scarf']){
+   const item=document.querySelector(`[data-case="${id}"]`);item.textContent=`${G.CLUES[id].name.replace(/^The /,'')} — clue ${state.clues.includes(id)?'found':'missing'}`;item.classList.toggle('done',state.clues.includes(id));
+  }
+  for(const id of ['mara','silas','ivo']){
+   const item=document.querySelector(`[data-case="${id}"]`);item.textContent=`${G.NPCS[id].name} — testimony ${state.testimony.includes(id)?'confirmed':'pending'}`;item.classList.toggle('done',state.testimony.includes(id));
+  }
   $('journal').replaceChildren();
   if(!state.clues.length)line($('journal'),'No clues yet. Search the inn.');
   for(const clue of state.clues)line($('journal'),G.CLUES[clue].name+': '+G.CLUES[clue].text);
