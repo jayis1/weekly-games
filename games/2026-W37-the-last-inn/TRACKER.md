@@ -43,6 +43,15 @@ Monday September 7: RESUME this exact project. Exercise an authorized keyless lo
 - `INN_BUILD=/root/weekly-games/artifacts/package-check/the-last-inn/index.html PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:browser`: **PASS** same complete gameplay/protocol/security/recovery suite on extracted archive, not just source or title smoke test.
 - Live-provider testing: **NOT RUN**. The local HTTP fixture is synthetic protocol evidence, not a real AI model. No billable API request initiated.
 
+## BUILD stage — 2026-09-09
+- UTC clock: `2026-09-09T05:24:25Z`, actual ISO `2026-W37`; bootstrap identity is still current and `current.json` remains `in_development`. Acquired the exclusive studio lock before inspection; initial working tree was clean, so no interrupted edits needed recovery.
+- Bounded task completed: re-exercised the frozen playable loop and BYO-AI adapter after the prior QA checkpoint. No live provider request was initiated because no credentials/budget are authorized; the local HTTP fixture remains explicitly synthetic protocol evidence.
+- `npm test`: **10/10 pass**. Mechanics, canonical endings, trust/evidence gating, bounded separate NPC knowledge/history, endpoint security, key isolation, malformed/oversized/HTTP failures, cancellation/timeout/concurrency and request budget all pass.
+- `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:browser`: **PASS** actual Chromium controls, rehearsal win/unsupported loss/restart, all three NPC fixture requests, key isolation, XSS-as-text, 429 recovery, cancellation/retry, mobile overflow and zero page JavaScript errors. Fixture only; not live AI.
+- `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:qa`: **PASS** all five endings, keyboard start, turn-based idle pause, free reread, blank-question rejection, disabled ending controls, restart/reload reset, 320/390/768/1280px layouts, 50 restart/inspect cycles, empty storage, zero HTTP requests and zero page errors. Headless observations are not human playtesting or a performance guarantee.
+- `npm audit --omit=optional`: **0 vulnerabilities**; `git diff --check`: clean. No runtime source change was justified by this verification pass; feature freeze remains respected.
+- Remaining blockers unchanged: live AI knowledge-fidelity/compatibility evidence requires authorized provider access and budget; no human playtest; no other browser or touch-device certification; GitHub Release upload still needs `gh` API authentication. Next bounded milestone is authorized live-model validation or, if unavailable, preserve scope and obtain human puzzle-comprehension feedback before release review.
+
 ## Release paths and remote status
 - **Not released**: this is the early kickoff preview, not Saturday's eventual release candidate. Current status remains `in_development`; W37 project identity is recorded atomically in local `current.json`.
 - Tested playable preview: `/root/weekly-games/artifacts/2026-W37-the-last-inn-kickoff.zip` (14,326 bytes).
