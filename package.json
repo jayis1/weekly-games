@@ -1,10 +1,12 @@
 {
   "name": "weekly-games-studio",
   "private": true,
+  "author": "jayis1",
   "engines": { "node": ">=20" },
   "scripts": {
-    "test": "node --test games/2026-W37-the-last-inn/tests/core.test.cjs",
-    "test:browser": "node games/2026-W37-the-last-inn/tests/browser.cjs",
+    "test": "node --test games/*/tests/core.test.cjs",
+    "test:browser": "node games/2026-W38-lantern-watch/tests/browser.cjs",
+    "test:last-inn": "node games/2026-W37-the-last-inn/tests/browser.cjs",
     "test:qa": "node games/2026-W37-the-last-inn/tests/qa.cjs"
   },
   "devDependencies": {

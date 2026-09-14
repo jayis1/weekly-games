@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lantern Watch</title><link rel="stylesheet" href="style.css"></head>
+<body>
+ <main>
+  <header><p class="eyebrow">2026-W38 · Northbreak Light</p><h1>Lantern Watch</h1><p class="lede">Two ships call through the storm. Read the harbor signals, question both captains, then choose the only safe order before dawn.</p><button id="begin">Begin the watch</button></header>
+  <section id="game" hidden>
+   <details class="connection" open><summary>Captain AI connection</summary>
+    <p class="disclosure">Live mode sends your question, the chosen captain’s bounded persona and up to four prior exchanges to your configured OpenAI-compatible Chat Completions endpoint. The API key stays in memory for this page only and is sent only in the Authorization header. Your provider may log data or charge you. Scripted rehearsal sends nothing and is not live AI.</p>
+    <div class="form-grid">
+     <label>Mode<select id="mode"><option value="rehearsal">Scripted rehearsal (offline)</option><option value="live">Live BYO-AI</option></select></label>
+     <label>Endpoint<input id="endpoint" type="url" placeholder="https://provider.example/v1/chat/completions" autocomplete="off"></label>
+     <label>Model<input id="model" placeholder="model name" autocomplete="off" maxlength="120"></label>
+     <label>Optional API key<input id="api-key" type="password" autocomplete="off" placeholder="session only"></label>
+    </div>
+    <label class="consent"><input id="consent" type="checkbox"> I authorize each manual live transmission and understand provider data handling and charges may apply.</label>
+    <div class="actions"><button id="apply">Apply connection</button><button id="cancel" class="quiet" disabled>Cancel request</button></div>
+    <p id="connection-status" class="status">Connection not applied.</p>
+   </details>
+
+   <div class="watchbar"><strong id="watch-status">6 watches remain</strong><span>Each new signal inspection and successful captain call spends one watch.</span></div>
+   <div class="columns">
+    <section class="panel"><p class="eyebrow">Signal desk</p><h2>Read the storm</h2><button class="signal" data-signal="shoal"><strong>Decode north-shoal bells</strong><span>Unread</span></button><button class="signal" data-signal="tug"><strong>Check harbor tug flag</strong><span>Unread</span></button><div id="signal-notes" class="notes">No signals decoded.</div></section>
+    <section class="panel radio"><p class="eyebrow">Radio room</p><h2>Question a captain</h2>
+     <label>Captain<select id="captain"><option value="ferry">Captain Elian Roe · Morrow Bell</option><option value="freighter">Captain Sable Venn · Ashwing</option></select></label>
+     <label>Present decoded signal<select id="present-signal"><option value="">Listen without evidence</option></select></label>
+     <label>Your question<textarea id="question" maxlength="400" rows="3">State your safest route.</textarea></label>
+     <button id="transmit">Transmit</button><p id="notice" class="status" aria-live="polite">Apply a connection before transmitting.</p><div id="dialogue" class="dialogue" aria-live="polite"></div>
+    </section>
+   </div>
+   <section class="panel decision"><p class="eyebrow">Harbor order</p><h2>Commit before dawn</h2><div class="form-grid"><label>Ship entering first<select id="first-vessel"><option value="ferry">Morrow Bell ferry</option><option value="freighter">Ashwing freighter</option></select></label><label>Harbor tug<select id="tug-order"><option value="send">Send to Ashwing</option><option value="hold">Hold at pier</option></select></label></div><button id="commit">Commit harbor order</button><div id="ending" class="ending" tabindex="-1" hidden></div><button id="restart" class="quiet">Restart watch</button></section>
+  </section>
+ </main>
+ <script src="game.js"></script><script src="provider.js"></script><script src="app.js"></script>
+</body>
+</html>
