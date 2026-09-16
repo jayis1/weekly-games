@@ -48,4 +48,4 @@ Exercise question clarity and route comprehension with a human tester without ad
 - Launch source/build: open `games/2026-W38-lantern-watch/index.html`.
 - Status: in development; no release/tag created.
 - Source destination: `git@github.com:jayis1/weekly-games.git`, branch `main`.
-- Commit SHA, push, and exact remote-SHA comparison are recorded by the kickoff completion report after the immutable commit exists.
+- Commit `1645e350cc730f11f2caccbd70547c743d8399b2` pushed to `main`; exact remote SHA matched after push. Subsequent tracker bookkeeping commit will be verified likewise.
