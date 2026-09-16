@@ -24,7 +24,7 @@ Each manual transmission sends:
 
 - the selected captain’s distinct bounded persona and authored knowledge;
 - the player’s current question;
-- at most four earlier exchanges with that captain;
+- at most four earlier question/answer exchanges with that captain, preserving both sides in order;
 - the configured model name.
 
 The optional API key is held in JavaScript memory for the page session, removed from the visible field, sent only in the HTTP Authorization request header, and never stored in web storage, game state, prompts, logs, or files. The configured provider may retain conversation data and may charge for requests. Check its terms before authorizing live mode.

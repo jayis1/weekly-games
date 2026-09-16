@@ -60,6 +60,13 @@ test('captains have distinct bounded prompts and memories',()=>{
  for(let i=0;i<8;i++)G.remember(s,'ferry','q'+i,'a'+i);
  assert.equal(s.vessels.ferry.memory.length,4);
  assert.equal(s.vessels.freighter.memory.length,0);
+ assert.equal(ferry.filter(message=>message.role==='user').length,1);
+ assert.equal(ferry.filter(message=>message.role==='assistant').length,0);
+ const withMemory=G.messages(s,'ferry','latest');
+ assert.deepEqual(withMemory.slice(1).map(message=>message.content),['q4','a4','q5','a5','q6','a6','q7','a7','latest']);
+ assert.equal(withMemory.filter(message=>message.role==='user').length,5);
+ assert.equal(withMemory.filter(message=>message.role==='assistant').length,4);
+ assert.equal(withMemory.at(-1).content,'latest');
  assert(!JSON.stringify(ferry).includes('api'));
 });
 

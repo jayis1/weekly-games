@@ -19,7 +19,7 @@
   vessel.confirmed=true;return {kind:'confirmed',text:`Route confirmed for ${VESSELS[vesselId].name}.`};
  }
  function remember(state,vesselId,question,answer){requireVessel(vesselId);const memory=state.vessels[vesselId].memory;memory.push({question:String(question).slice(0,240),answer:String(answer).slice(0,500)});while(memory.length>4)memory.shift();}
- function messages(state,vesselId,question){const vessel=requireVessel(vesselId);const memory=state.vessels[vesselId].memory.map(turn=>({role:'user',content:turn.question},{role:'assistant',content:turn.answer})).flat();return [
+ function messages(state,vesselId,question){const vessel=requireVessel(vesselId);const memory=state.vessels[vesselId].memory.flatMap(turn=>[{role:'user',content:turn.question},{role:'assistant',content:turn.answer}]);return [
   {role:'system',content:`You are ${vessel.captain} aboard the ${vessel.name}, a ${vessel.personality}. Stay in character. Known facts only: ${vessel.knowledge} Never invent routes, signals, outcomes, tools, or authority. Reply in at most 70 words. The lighthouse engine alone controls harbor state.`},
   ...memory,
   {role:'user',content:String(question).slice(0,400)}

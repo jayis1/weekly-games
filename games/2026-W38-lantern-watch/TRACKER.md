@@ -29,6 +29,9 @@ Decode the north-shoal and harbor-tug signals, question Captain Elian Roe and Ca
 - `npm audit --omit=optional`: 0 vulnerabilities. `git diff --check`: clean.
 - Independent fail-closed review initially found three live-path issues: consent revocation did not block later calls, failed setup retained a key in the field, and mismatched evidence reached the provider before local validation. Regression tests were added first; all three issues were fixed. Second independent review passed with no security concerns, logic errors, or requirement failures.
 - Packaged development preview: `/root/weekly-games/artifacts/2026-W38-lantern-watch-kickoff.zip`, 10,285 bytes, SHA-256 `e5118ae11bc7751e317e869ac25fbf632a70ac99f2887fec21190ed5a6aafd6f`. CRC and byte-for-byte equality for all six runtime/documentation files pass; full Chromium gameplay/protocol suite passes against its extracted contents.
+- BUILD bounded task (2026-09-16): fixed captain conversation context assembly so each captain receives both sides of each of its latest four exchanges in chronological order; added exact-order regression coverage and documented the protocol. This advances the signature BYO-AI NPC tier by preserving character-specific conversational continuity without changing canonical game state.
+- Independent review: PASS after final diff review; reviewer confirmed production fix, scope, test results, and no live-provider calls. Reviewer’s initial test-coverage finding was addressed by asserting exact retained message order.
+- Verification after fix: `npm test` — 17/17 pass; `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:browser` — PASS with complete rehearsal/protocol/error/restart/responsive flows; `git diff --check` — clean.
 
 ## Blockers and limitations
 
