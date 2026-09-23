@@ -4,7 +4,7 @@ Author: jayis1
 
 A compact deduction game aboard the flooding deep-sea station Thalassa. One power cell survives — enough to keep two of three failing subsystems alive. Read the station telemetry, question each subsystem's specialist through your own AI provider, and cut power to the one system that can actually hold on its own reserve. Cut wrong and the crew is lost.
 
-Status: in development. Monday-equivalent kickoff 2026-09-23 (2026-W39); not released.
+Status: RELEASED 2026-09-23 (2026-W39). Final playtest pass complete; shipped on `main`.
 
 ## How to play
 
