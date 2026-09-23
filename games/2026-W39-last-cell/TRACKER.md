@@ -33,6 +33,11 @@ One power cell can sustain exactly two of three failing subsystems aboard the de
 - Live AI model/provider test NOT RUN: no authorized credentials or paid-test budget. No billable request initiated. Scripted rehearsal and local HTTP fixture are not live-model evidence.
 - No human playtest, non-Chromium browser, physical touch device, audio, or save system verification. Agent visual inspection only, not human playtesting.
 
+## Art & UI polish log
+
+- 2026-09-23 (job kanban:t_a55045cc, gamehermes): art/polish pass on the W39 build. Added (1) a seven-dot power-cycle pip meter beside the reserve readout — filled dots for remaining cycles, hollow outlines for spent, so the tightening budget is legible at a glance; (2) a persistent three-subsystem status roster with per-specialist confirmation badges (Unqueried → Rapport open → Confirmed STABLE/CRITICAL) colored by outcome, making the deduction state visible instead of buried in the reserve string; (3) a low-reserve warning state (≤2 cycles) that reddens the readout and pulses the remaining pips; (4) decoded-readout glow accent, and an animated rise/glow on the win/loss ending card. All motion gated behind `prefers-reduced-motion: reduce`. No engine, mechanic, budget, or BYO-AI security surface changed — pure presentation. `#reserve-status` text contract ("N cycles remain", "X/3 systems confirmed") preserved so existing browser assertions hold.
+- GREEN after the pass: `npm test` (all games) 28/28; `npm run test:browser` (Chromium, local protocol fixture) PASS with zero page errors; responsive 390px check still no horizontal overflow.
+
 ## Next bounded task
 
 Thursday: continue clarity/comprehension iteration and begin art/UI polish handoff (child t_a55045cc). If authorized credentials and budget become available, run one bounded live-model compatibility/knowledge-fidelity test against the documented protocol.

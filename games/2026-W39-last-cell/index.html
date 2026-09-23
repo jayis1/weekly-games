@@ -18,7 +18,12 @@
     <p id="connection-status" class="status">Connection not applied.</p>
    </details>
 
-   <div class="statusbar"><strong id="reserve-status">7 cycles remain</strong><span>Each new readout you decode and each successful specialist call spends one power cycle.</span></div>
+   <div class="statusbar"><div class="reserve"><strong id="reserve-status">7 cycles remain</strong><div id="reserve-pips" class="pips" aria-hidden="true"></div></div><span>Each new readout you decode and each successful specialist call spends one power cycle.</span></div>
+   <ul id="roster" class="roster" aria-label="Subsystem confirmation status">
+    <li data-sys="reactor"><span class="rname">Reactor core</span><span class="badge">Unqueried</span></li>
+    <li data-sys="oxygen"><span class="rname">Oxygen scrubbers</span><span class="badge">Unqueried</span></li>
+    <li data-sys="comms"><span class="rname">Comms array</span><span class="badge">Unqueried</span></li>
+   </ul>
    <div class="columns">
     <section class="panel"><p class="eyebrow">Telemetry desk</p><h2>Read the station</h2><button class="readout" data-readout="core"><strong>Decode reactor coolant trace</strong><span>Unread</span></button><button class="readout" data-readout="scrubber"><strong>Pull CO&#8322; scrubber log</strong><span>Unread</span></button><button class="readout" data-readout="array"><strong>Check comms array power draw</strong><span>Unread</span></button><div id="readout-notes" class="notes">No readouts decoded.</div></section>
     <section class="panel radio"><p class="eyebrow">Comm channel</p><h2>Question a specialist</h2>
