@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Last Cell</title><link rel="stylesheet" href="style.css"></head>
+<body>
+ <main>
+  <header><p class="eyebrow">2026-W39 · Deep Station Thalassa</p><h1>Last Cell</h1><p class="lede">One power cell survives, enough for two of three failing systems. Read the station telemetry, question each specialist, and cut power to the one system that can hold on its own — before the reserve runs dry.</p><button id="begin">Begin the reroute</button></header>
+  <section id="game" hidden>
+   <details class="connection" open><summary>Specialist AI connection</summary>
+    <p class="disclosure">Live mode sends your question, the chosen specialist's bounded persona and up to four prior exchanges to your configured OpenAI-compatible Chat Completions endpoint. The API key stays in memory for this page only and is sent only in the Authorization header. Your provider may log data or charge you. Scripted rehearsal sends nothing and is not live AI.</p>
+    <div class="form-grid">
+     <label>Mode<select id="mode"><option value="rehearsal">Scripted rehearsal (offline)</option><option value="live">Live BYO-AI</option></select></label>
+     <label>Endpoint<input id="endpoint" type="url" placeholder="https://provider.example/v1/chat/completions" autocomplete="off"></label>
+     <label>Model<input id="model" placeholder="model name" autocomplete="off" maxlength="120"></label>
+     <label>Optional API key<input id="api-key" type="password" autocomplete="off" placeholder="session only"></label>
+    </div>
+    <label class="consent"><input id="consent" type="checkbox"> I authorize each manual live transmission and understand provider data handling and charges may apply.</label>
+    <div class="actions"><button id="apply">Apply connection</button><button id="cancel" class="quiet" disabled>Cancel request</button></div>
+    <p id="connection-status" class="status">Connection not applied.</p>
+   </details>
+
+   <div class="statusbar"><strong id="reserve-status">7 cycles remain</strong><span>Each new readout you decode and each successful specialist call spends one power cycle.</span></div>
+   <div class="columns">
+    <section class="panel"><p class="eyebrow">Telemetry desk</p><h2>Read the station</h2><button class="readout" data-readout="core"><strong>Decode reactor coolant trace</strong><span>Unread</span></button><button class="readout" data-readout="scrubber"><strong>Pull CO&#8322; scrubber log</strong><span>Unread</span></button><button class="readout" data-readout="array"><strong>Check comms array power draw</strong><span>Unread</span></button><div id="readout-notes" class="notes">No readouts decoded.</div></section>
+    <section class="panel radio"><p class="eyebrow">Comm channel</p><h2>Question a specialist</h2>
+     <label>Specialist<select id="specialist"><option value="reactor">Chief Doss Mara · Reactor core</option><option value="oxygen">Medic Wren Ka · Oxygen scrubbers</option><option value="comms">Signalman Ivo Pell · Comms array</option></select></label>
+     <label>Present decoded readout<select id="present-readout"><option value="">Listen without evidence</option></select></label>
+     <label>Your question<textarea id="question" maxlength="400" rows="3">Report your true status.</textarea></label>
+     <button id="transmit">Transmit</button><p id="notice" class="status" aria-live="polite">Apply a connection before transmitting.</p><div id="dialogue" class="dialogue" aria-live="polite"></div>
+    </section>
+   </div>
+   <section class="panel decision"><p class="eyebrow">Power reroute</p><h2>Commit before the reserve dies</h2><div class="form-grid"><label>Cut power to<select id="drop-subsystem"><option value="reactor">Reactor core</option><option value="oxygen">Oxygen scrubbers</option><option value="comms">Comms array</option></select></label></div><p class="disclosure">The last cell will keep the other two systems alive. Confirm both survivors before you commit.</p><button id="commit">Commit power reroute</button><div id="ending" class="ending" tabindex="-1" hidden></div><button id="restart" class="quiet">Restart reroute</button></section>
+  </section>
+ </main>
+ <script src="game.js"></script><script src="provider.js"></script><script src="app.js"></script>
+</body>
+</html>
