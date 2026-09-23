@@ -18,9 +18,12 @@
  function inspect(state,id){if(!READOUTS[id])throw new Error('Unknown readout.');if(state.ended)throw new Error('The reroute is committed.');if(!state.readouts.includes(id)){if(state.cycles<=0)throw new Error('Power reserve is gone.');state.readouts.push(id);state.cycles--;}return READOUTS[id];}
  function validateCall(state,subId,readoutId){requireSub(subId);if(state.ended)throw new Error('The reroute is committed.');if(readoutId){if(!READOUTS[readoutId])throw new Error('Unknown readout.');if(!state.readouts.includes(readoutId))throw new Error('Decode that readout first.');if(READOUTS[readoutId].subsystem!==subId)throw new Error('That readout is not from this subsystem.');}if(state.cycles<=0)throw new Error('Power reserve is gone.');return true;}
  function recordCall(state,subId,readoutId){validateCall(state,subId,readoutId);
-  const sub=state.subsystems[subId];state.cycles--;
+  const sub=state.subsystems[subId];
+  // A readout press before rapport is a no-op: gate it BEFORE spending any reserve so a
+  // wasted cycle never costs the player a deduction they cannot afford.
+  if(readoutId&&sub.trust<1)return {kind:'needs_trust',text:'Hear them out once before pressing a readout on them.'};
+  state.cycles--;
   if(!readoutId){sub.trust=Math.max(1,sub.trust);return {kind:'heard',text:`${SUBSYSTEMS[subId].specialist} keeps the channel open. Rapport established.`};}
-  if(sub.trust<1)return {kind:'needs_trust',text:'Hear them out once before pressing a readout on them.'};
   sub.verified=true;sub.status=subId===STABLE_ID?'stable':'critical';
   return {kind:'verified',text:`${SUBSYSTEMS[subId].name} confirmed ${sub.status.toUpperCase()}.`};
  }

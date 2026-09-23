@@ -53,12 +53,35 @@ test('call validation rejects mismatched evidence before state mutation',()=>{
  assert.deepEqual(s,before);
 });
 
-test('trust is required before pressing a readout',()=>{
+test('the seven-cycle reserve confirms at most two of three systems, forcing deduction',()=>{
+ // Full confirm cost per system: inspect readout (1) + listen (1) + press readout (1) = 3 cycles.
+ const s=G.fresh();
+ confirm(s,'reactor','oxygen');   // 6 cycles spent
+ assert.equal(s.cycles,1);
+ assert.equal(s.subsystems.reactor.verified,true);
+ assert.equal(s.subsystems.oxygen.verified,true);
+ // Only one cycle left — not enough to inspect+listen+press the third system.
+ G.inspect(s,'array');            // 1 cycle -> 0
+ assert.equal(s.cycles,0);
+ assert.throws(()=>G.recordCall(s,'comms',''),/Power reserve is gone/);
+ assert.equal(s.subsystems.comms.verified,false);
+});
+
+test('trust is required before pressing a readout, and the failed press costs no reserve',()=>{
  const s=G.fresh();
  G.inspect(s,'core');
+ assert.equal(s.cycles,6);
  const result=G.recordCall(s,'reactor','core');
  assert.equal(result.kind,'needs_trust');
  assert.equal(s.subsystems.reactor.verified,false);
+ // The no-op press must not spend a cycle: reserve is deduction currency.
+ assert.equal(s.cycles,6);
+ // After listening once, the same press now succeeds and spends exactly one cycle.
+ G.recordCall(s,'reactor','');
+ assert.equal(s.cycles,5);
+ const verified=G.recordCall(s,'reactor','core');
+ assert.equal(verified.kind,'verified');
+ assert.equal(s.cycles,4);
 });
 
 test('canonical outcomes remain engine-owned',()=>{

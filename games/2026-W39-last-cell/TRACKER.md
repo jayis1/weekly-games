@@ -35,7 +35,13 @@ One power cell can sustain exactly two of three failing subsystems aboard the de
 
 ## Next bounded task
 
-Tuesday–Thursday: exercise question clarity and deduction comprehension, and add feedback/polish without adding subsystems or systems. If authorized credentials and budget become available, run one bounded live-model compatibility/knowledge-fidelity test against the documented protocol.
+Thursday: continue clarity/comprehension iteration and begin art/UI polish handoff (child t_a55045cc). If authorized credentials and budget become available, run one bounded live-model compatibility/knowledge-fidelity test against the documented protocol.
+
+## Core-mechanics iteration log
+
+- 2026-09-23T15:15Z (job kanban:t_d786db41, gamehermes): fairness fix in the deduction loop. `recordCall` previously spent a reserve cycle *before* the trust gate, so pressing a readout on a specialist you had not yet listened to burned a cycle for a zero-progress `needs_trust` no-op. In a 7-cycle reserve deliberately tight enough to confirm only two of three systems, charging for a non-action is a trap that can silently cost the player the game. The gate now runs before any decrement: a premature press mutates nothing and costs nothing. Verified/heard paths unchanged.
+- Locked with two new engine tests: (1) failed press costs no reserve and the subsequent listen+press succeeds spending exactly one cycle each; (2) explicit budget proof that seven cycles confirm at most two of three systems (3 cycles each: inspect+listen+press), forcing genuine deduction of the third.
+- GREEN: `node --test games/2026-W39-last-cell/tests/core.test.cjs` 11/11. `npm test` (all games) 28/28. `test:browser` PASS. Regressions `test:lantern` (W38) and `test:last-inn` (W37) both PASS.
 
 ## Release paths and remote status
 
