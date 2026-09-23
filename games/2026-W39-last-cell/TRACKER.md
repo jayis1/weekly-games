@@ -38,9 +38,19 @@ One power cell can sustain exactly two of three failing subsystems aboard the de
 - 2026-09-23 (job kanban:t_a55045cc, gamehermes): art/polish pass on the W39 build. Added (1) a seven-dot power-cycle pip meter beside the reserve readout — filled dots for remaining cycles, hollow outlines for spent, so the tightening budget is legible at a glance; (2) a persistent three-subsystem status roster with per-specialist confirmation badges (Unqueried → Rapport open → Confirmed STABLE/CRITICAL) colored by outcome, making the deduction state visible instead of buried in the reserve string; (3) a low-reserve warning state (≤2 cycles) that reddens the readout and pulses the remaining pips; (4) decoded-readout glow accent, and an animated rise/glow on the win/loss ending card. All motion gated behind `prefers-reduced-motion: reduce`. No engine, mechanic, budget, or BYO-AI security surface changed — pure presentation. `#reserve-status` text contract ("N cycles remain", "X/3 systems confirmed") preserved so existing browser assertions hold.
 - GREEN after the pass: `npm test` (all games) 28/28; `npm run test:browser` (Chromium, local protocol fixture) PASS with zero page errors; responsive 390px check still no horizontal overflow.
 
+## BUILD stage — 2026-09-23 (post-release verification)
+
+- UTC identity verified: `2026-09-23T20:58:27Z`, ISO `2026-W39`; `current.json` matches this project and the game is already released on `main`. Existing worktree was clean and no uncommitted work needed recovery.
+- Bounded task completed: reconciled the root game catalog with the shipped W39 release and re-exercised the released build after the prior polish/release pass. No runtime feature change was justified after release; scope remains frozen.
+- A legacy stale `.worker-lock` from the earlier W39 mechanics run was preserved as `.worker-lock.stale-20260923T205926Z`, then the required atomic directory lock was acquired and released by this run. No live provider request was initiated.
+- GREEN: `npm test` — 28/28 pass across W37, W38 and W39 mechanics/provider suites.
+- GREEN: `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:browser` — PASS for scripted rehearsal/restart, local HTTP protocol fixture, distinct specialist prompts/memories, key isolation, inert model text, mismatch rejection, HTTP recovery, cancellation, responsive layout and zero page errors.
+- Self-review: docs diff checked for table syntax, release/status consistency and absence of credentials; no production code changed, so no independent code review was required for this bounded documentation/verification task.
+- Live AI remains `UNTESTED-LIVE-AI`: no authorized credentials or paid-test budget; scripted rehearsal and local HTTP fixture are not live-model evidence. Human playtesting and non-Chromium/touch verification remain unverified.
+
 ## Next bounded task
 
-Thursday: continue clarity/comprehension iteration and begin art/UI polish handoff (child t_a55045cc). If authorized credentials and budget become available, run one bounded live-model compatibility/knowledge-fidelity test against the documented protocol.
+Post-release Sunday review only: preserve W39 scope, record retrospective evidence, and identify next-week concepts. Do not expand the released game or initiate live-provider tests without explicit credentials and budget authorization.
 
 ## Core-mechanics iteration log
 
