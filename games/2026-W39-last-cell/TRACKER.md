@@ -91,3 +91,37 @@ Bug fixes this pass: none required — the build was already green and correct a
 
 - Launch/build: open `games/2026-W39-last-cell/index.html` directly (no server/build/runtime dependency).
 - Status: RELEASED on `main`. Remote SHA verified after push (see commit below).
+
+## Friday QA and polish — 2026-09-24 UTC
+
+Author: jayis1
+
+Feature freeze held. The released W39 scope remains one browser build, three BYO-AI specialists, one deduction/reroute loop, and no save or pause system; no new feature, asset, provider call, or runtime code change was made.
+
+### QA results
+
+- UTC/current-project gate: `date -u '+%F %T UTC %G-W%V'` returned `2026-09-24 09:05:33 UTC 2026-W39`; `current.json` is `2026-W39`, `games/2026-W39-last-cell`, and `Last Cell`.
+- Cold start / first-screen clarity: directly opened `games/2026-W39-last-cell/index.html`; title, premise, goal, and `Begin the reroute` control rendered cleanly in Chromium. This is an automated visual inspection, not a human comprehension playtest.
+- Scripted-rehearsal win: decoded reactor coolant and CO₂ scrubber telemetry, listened to and confirmed both corresponding specialists, cut the unconfirmed comms array, and received `Crew saved`. Reserve displayed `1 cycles remain · 2/3 systems confirmed`.
+- Restart: selected `Restart reroute` after the win; reserve reset to `7 cycles remain · 0/3 systems confirmed`, ending was hidden, and all three roster badges reset to `UNQUERIED`.
+- Loss: from a fresh restart, cut reactor without survivor confirmations; received the distinct `Acting on a hunch` loss ending. The measured synchronous commit handler took `1.000 ms` in Chromium; this is not a frame-rate profile.
+- Controls / responsiveness: automated Chromium suite exercised all documented buttons/selects, scripted rehearsal, restart, mobile `390px` layout, and error/cancel recovery. It passed with no page errors or horizontal overflow.
+- Pause: not present in the released game and therefore not tested; the turn-based, player-initiated interaction loop has no running simulation to pause.
+- Saving: not present by explicit scope and therefore not tested.
+- Sound: no audio system/assets are included, so no sound verification applies.
+- `npm test`: PASS, 28/28 core tests across W37–W39.
+- `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:browser`: PASS — W39 Chromium rehearsal win/restart, local OpenAI-compatible fixture, distinct specialist prompts, key isolation, inert model-output rendering, local evidence rejection, HTTP 429 recovery, cancellation, 390px layout, and zero page errors.
+- `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:lantern`: PASS (W38 regression).
+- `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:last-inn`: PASS (W37 regression).
+- `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:qa`: PASS (W37 regression QA; its reported headless load time was 72 ms with no long tasks). This performance figure does not certify W39 performance.
+
+### Findings, fixes, and release blockers
+
+- No reproducible W39 bug or incomplete player-facing system was found; no scope reduction or polish change was justified under feature freeze.
+- Live BYO-AI provider behavior remains untested: no authorized credentials or paid-test budget was available, and no billable request was made. Scripted rehearsal and the local HTTP fixture are not live-model evidence.
+- Human playtesting, non-Chromium browsers, physical touch input, and audio remain untested. These are release limitations, not failures of the tested browser build.
+- Release blocker: live-provider validation remains required before claiming that live BYO-AI behavior has been verified. The released offline rehearsal and local-fixture build remains independently tested.
+
+### Remote status
+
+- Approved remote verified as `git@github.com:jayis1/weekly-games.git`; `origin/main` and local `main` were both `d9c1d3c912326d7c5a575178d5c9487025689657` before this documentation checkpoint. A new commit/push is required for this QA record.
