@@ -41,4 +41,8 @@ Each specialist has a distinct persona and bounded, character-specific knowledge
 
 - No live AI model/provider test has been run: no authorized credentials or paid-test budget. Scripted rehearsal and the local HTTP fixture are not live-model evidence.
 - No human playtest, non-Chromium browser, touch device, audio, or save-system verification.
-- No license selected; this game bundles no third-party assets.
+- No audio or save system is included by design.
+
+## License and assets
+
+Last Cell's original code and presentation are licensed under the [MIT License](LICENSE), copyright 2026 jayis1. The release bundles no third-party assets or runtime dependencies.

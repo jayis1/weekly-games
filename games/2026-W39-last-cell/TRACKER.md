@@ -125,3 +125,17 @@ Feature freeze held. The released W39 scope remains one browser build, three BYO
 ### Remote status
 
 - Approved remote verified as `git@github.com:jayis1/weekly-games.git`; `origin/main` and local `main` were both `d9c1d3c912326d7c5a575178d5c9487025689657` before this documentation checkpoint. A new commit/push is required for this QA record.
+
+## Saturday release packaging — 2026-09-24 UTC
+
+Author: jayis1
+
+- UTC/current-project gate passed: `2026-W39` matches `current.json` and `games/2026-W39-last-cell`; exclusive studio lock acquired atomically.
+- GREEN build/mechanics: `npm test` — 28/28 passing Node tests across W37–W39.
+- GREEN runtime/mechanics: `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:browser` — Chromium direct-file rehearsal win/restart plus local OpenAI-compatible fixture, key isolation, inert model text, evidence rejection, HTTP-429 recovery, cancellation recovery, responsive 390px layout, and zero page errors.
+- GREEN browser regressions: `npm run test:lantern` and `npm run test:last-inn` both passed.
+- Packaged self-contained browser build: `/root/weekly-games/artifacts/last-cell-2026-W39-browser.zip` (13,114 bytes). It contains the directly openable `index.html`, all local CSS/JavaScript, controls/setup/limitations README, and a per-game MIT `LICENSE` credited to jayis1. `unzip -t` passed for all seven files; required-entry and credential-signature scans passed.
+- SHA-256: `76b6edd44caeddef9d9f90a42c07794603eade5e973318b8a22bfe4ba4cd721f` (`last-cell-2026-W39-browser.zip`).
+- Release upload blocker: GitHub CLI has no authenticated host, so no GitHub Release asset/tag was uploaded. Source is committed and pushed through the approved SSH remote; the verified playable archive is retained locally for delivery.
+- Known limitations: live BYO-AI behavior remains untested because no authorized credentials or paid-test budget was supplied. The scripted rehearsal and local HTTP fixture are tested substitutes only. Human playtesting, non-Chromium browsers, physical touch, audio, and saving remain unverified/not included.
+- Next bounded task: Sunday read-only retrospective; do not expand the released W39 scope.
