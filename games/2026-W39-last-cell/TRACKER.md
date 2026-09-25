@@ -152,3 +152,16 @@ Author: jayis1
 - Source review notes the fixed premature-press reserve charge, but the UI still calls the provider before the rapport gate; a rejected press can consume provider budget. No gameplay change was made. Fun, pacing and live dialogue value remain unverified.
 - Remote baseline: configured default branch `main`; local and remote SHA `e3dae7a3ee499341ff03e13b41ace763ce93375b`. This documentation checkpoint is to be committed/pushed on `main`, with exact remote SHA read-back in the run report.
 - Next bounded task: human playtest handoff and an explicitly authorized bounded live-provider check; release upload requires authenticated release access. Fresh concept candidates are recorded only in the retrospective, not selected or started. No scheduling, skill change, repository creation or release publication occurred.
+
+## Idempotent KICKOFF cron replay — 2026-09-25 UTC
+
+Author: jayis1
+
+- UTC identity: `2026-09-25T21:26:34Z`, ISO `2026-W39`, Friday. The W37 bootstrap exception ended September 13, so this run did not resume or modify The Last Inn. `current.json` already identified the current-week project as `games/2026-W39-last-cell` with status `released`; repeated kickoff therefore resumed and verified Last Cell without creating a duplicate project or downgrading release state.
+- Exclusive studio lock acquired atomically before this documentation update. Engine/export feasibility remains confirmed with Node `v22.22.3`, npm `10.9.8`, Playwright `1.63.0`, cached headless Chromium, and a directly openable self-contained browser build.
+- `npm test`: PASS, 28/28 core tests across W37–W39.
+- `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:browser`: PASS — W39 complete rehearsal win/restart, two specialists through the local OpenAI-compatible fixture, key isolation, inert model output, evidence rejection, HTTP recovery, cancellation, responsive layout, and zero page errors.
+- Browser regressions `npm run test:lantern`, `npm run test:last-inn`, and `npm run test:qa`: PASS. W37 QA exercised all five endings, restart/state reset, 320/390/768/1280 px layouts, 50 restart/inspect cycles, empty storage, no network requests, and no JavaScript errors.
+- No gameplay change was justified: the bounded playable core and release already existed and passed verification. No new project, branch, release, provider call, or scheduled job was created.
+- Live BYO-AI model/provider behavior remains untested because no authorized credentials or paid-test budget were supplied. Scripted rehearsal and the local HTTP fixture are explicitly not live-model evidence. Human playtesting, non-Chromium browsers, physical touch, and audio remain unverified.
+- Next bounded task remains a human playtest handoff and an explicitly authorized one-shot live-provider check; GitHub Release publication still requires authenticated release access.
