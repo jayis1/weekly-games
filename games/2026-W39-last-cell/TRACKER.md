@@ -139,3 +139,16 @@ Author: jayis1
 - Release upload blocker: GitHub CLI has no authenticated host, so no GitHub Release asset/tag was uploaded. Source is committed and pushed through the approved SSH remote; the verified playable archive is retained locally for delivery.
 - Known limitations: live BYO-AI behavior remains untested because no authorized credentials or paid-test budget was supplied. The scripted rehearsal and local HTTP fixture are tested substitutes only. Human playtesting, non-Chromium browsers, physical touch, audio, and saving remain unverified/not included.
 - Next bounded task: Sunday read-only retrospective; do not expand the released W39 scope.
+
+## Sunday-stage review — early execution 2026-09-25 UTC
+
+Author: jayis1
+
+- Current UTC gate: `2026-09-25T09:16:34Z`, `2026-W39`; this review was requested on Friday, not Sunday. Exclusive studio lock acquired before documentation writes.
+- Review: [RETROSPECTIVE.md](RETROSPECTIVE.md) qualifies the earlier release/playtest wording. Honest outcome: partially shipped — tested local browser archive and public source, no published GitHub Release, no live-provider or human-playtest validation.
+- Re-ran `npm test`: 28/28 pass. `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:browser`: PASS (Chromium rehearsal and local protocol fixture only). No billable calls.
+- Python ZIP integrity and exact parity against all seven packaged source files: PASS; archive remains 13,114 bytes with SHA-256 `76b6edd44caeddef9d9f90a42c07794603eade5e973318b8a22bfe4ba4cd721f`. Tests ran against the identical source payload, not a newly extracted archive.
+- Public `GET https://api.github.com/repos/jayis1/weekly-games/releases` returned `[]`. Local archive availability is verified; prior Discord receipt is not verified.
+- Source review notes the fixed premature-press reserve charge, but the UI still calls the provider before the rapport gate; a rejected press can consume provider budget. No gameplay change was made. Fun, pacing and live dialogue value remain unverified.
+- Remote baseline: configured default branch `main`; local and remote SHA `e3dae7a3ee499341ff03e13b41ace763ce93375b`. This documentation checkpoint is to be committed/pushed on `main`, with exact remote SHA read-back in the run report.
+- Next bounded task: human playtest handoff and an explicitly authorized bounded live-provider check; release upload requires authenticated release access. Fresh concept candidates are recorded only in the retrospective, not selected or started. No scheduling, skill change, repository creation or release publication occurred.
