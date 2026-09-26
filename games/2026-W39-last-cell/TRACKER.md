@@ -165,3 +165,19 @@ Author: jayis1
 - No gameplay change was justified: the bounded playable core and release already existed and passed verification. No new project, branch, release, provider call, or scheduled job was created.
 - Live BYO-AI model/provider behavior remains untested because no authorized credentials or paid-test budget were supplied. Scripted rehearsal and the local HTTP fixture are explicitly not live-model evidence. Human playtesting, non-Chromium browsers, physical touch, and audio remain unverified.
 - Next bounded task remains a human playtest handoff and an explicitly authorized one-shot live-provider check; GitHub Release publication still requires authenticated release access.
+
+## BUILD stage — 2026-09-26 UTC
+
+Author: jayis1
+
+- UTC identity: `2026-09-26T09:29:46Z`, ISO `2026-W39`; `current.json` matches `games/2026-W39-last-cell` and status `released`. Existing worktree was clean; no interrupted edits needed recovery. Exclusive studio lock was acquired before code changes and released after verification.
+- Bounded task completed: fixed the remaining invalid-evidence path so the UI validates the rapport gate before any scripted or live provider request. Presenting a readout before listening now produces a visible error without consuming a provider request or reserve cycle; the engine's existing no-op `recordCall` behavior remains covered for direct callers.
+- Added `validateRecordCall` to the engine API, wired the browser transmit handler to use it, and added a core regression assertion. No credentials, prompts, saves, or arbitrary tools were introduced.
+- GREEN: `node --test games/2026-W39-last-cell/tests/core.test.cjs` — 11/11.
+- GREEN: `npm test` — 28/28 across W37–W39.
+- GREEN: `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:browser` — W39 Chromium rehearsal, local OpenAI-compatible fixture, key isolation, inert model text, evidence rejection, recovery, cancellation, responsive layout, and zero page errors.
+- GREEN regressions: the same cached Chromium path with `npm run test:lantern` and `npm run test:last-inn` passed.
+- Independent review: PASS; reviewer found no correctness, security, or regression issue in the diff. `git diff --check` passed.
+- Live BYO-AI remains `UNTESTED-LIVE-AI`: no authorized credentials or paid-test budget was available, so no billable request was initiated. Scripted rehearsal and local HTTP fixtures are not live-model evidence. Human playtesting, non-Chromium browsers, touch, and audio remain unverified.
+- Next bounded task: preserve released W39 scope; Sunday review or an explicitly authorized human/live-provider validation. GitHub Release upload remains blocked without authenticated release access.
+

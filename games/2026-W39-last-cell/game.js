@@ -17,6 +17,10 @@
  function requireSub(id){if(!SUBSYSTEMS[id])throw new Error('Unknown subsystem.');return SUBSYSTEMS[id];}
  function inspect(state,id){if(!READOUTS[id])throw new Error('Unknown readout.');if(state.ended)throw new Error('The reroute is committed.');if(!state.readouts.includes(id)){if(state.cycles<=0)throw new Error('Power reserve is gone.');state.readouts.push(id);state.cycles--;}return READOUTS[id];}
  function validateCall(state,subId,readoutId){requireSub(subId);if(state.ended)throw new Error('The reroute is committed.');if(readoutId){if(!READOUTS[readoutId])throw new Error('Unknown readout.');if(!state.readouts.includes(readoutId))throw new Error('Decode that readout first.');if(READOUTS[readoutId].subsystem!==subId)throw new Error('That readout is not from this subsystem.');}if(state.cycles<=0)throw new Error('Power reserve is gone.');return true;}
+ function validateRecordCall(state,subId,readoutId){validateCall(state,subId,readoutId);
+  if(readoutId&&state.subsystems[subId].trust<1)throw new Error('Hear them out once before pressing a readout on them.');
+  return true;
+ }
  function recordCall(state,subId,readoutId){validateCall(state,subId,readoutId);
   const sub=state.subsystems[subId];
   // A readout press before rapport is a no-op: gate it BEFORE spending any reserve so a
@@ -34,5 +38,5 @@
   {role:'user',content:String(question).slice(0,400)}
  ];}
  function decide(state,dropId){requireSub(dropId);state.ended=true;const powered=Object.keys(SUBSYSTEMS).filter(id=>id!==dropId);const allVerified=powered.every(id=>state.subsystems[id].verified);if(!allVerified)return {code:'unverified',title:'Acting on a hunch',text:'You reroute the cell without confirming both surviving systems. A guess in the dark; Thalassa cannot afford one.'};if(dropId!==STABLE_ID)return {code:'cascade',title:'Cascade failure',text:`${SUBSYSTEMS[dropId].name} was still failing. Cutting its power triggers a cascade and the crew is lost.`};return {code:'crew_saved',title:'Crew saved',text:`${SUBSYSTEMS[STABLE_ID].name} was holding on its own reserve. The last cell keeps the reactor and the air alive until rescue reaches Thalassa.`};}
- const api={STABLE_ID,READOUTS,SUBSYSTEMS,fresh,inspect,validateCall,recordCall,remember,messages,decide};if(typeof module!=='undefined')module.exports=api;else root.LastCellGame=api;
+ const api={STABLE_ID,READOUTS,SUBSYSTEMS,fresh,inspect,validateCall,validateRecordCall,recordCall,remember,messages,decide};if(typeof module!=='undefined')module.exports=api;else root.LastCellGame=api;
 })(globalThis);

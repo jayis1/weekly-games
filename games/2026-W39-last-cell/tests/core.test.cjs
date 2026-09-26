@@ -71,6 +71,8 @@ test('trust is required before pressing a readout, and the failed press costs no
  const s=G.fresh();
  G.inspect(s,'core');
  assert.equal(s.cycles,6);
+ assert.throws(()=>G.validateRecordCall(s,'reactor','core'),/Hear them out/);
+ assert.equal(s.cycles,6);
  const result=G.recordCall(s,'reactor','core');
  assert.equal(result.kind,'needs_trust');
  assert.equal(s.subsystems.reactor.verified,false);
