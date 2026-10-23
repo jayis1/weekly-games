@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Treaty Kitchen</title><link rel="stylesheet" href="style.css"></head>
+<body>
+ <main>
+  <header><p class="eyebrow">2026-W43 · The Neutral Hall</p><h1>Treaty Kitchen</h1><p class="lede">Two rival delegations sit down to one shared meal tonight, and you are the cook. You have six hours to question each delegate about what they can never eat, what would honour their people, and what they would rather not — then serve three ingredients that keep both at the table.</p><button id="begin">Light the stove</button></header>
+  <section id="game" hidden>
+   <details class="connection" open><summary>Delegate AI connection</summary>
+    <p class="disclosure">Live mode sends your question, the chosen delegate's bounded persona and dietary facts, and up to four prior exchanges to your configured OpenAI-compatible Chat Completions endpoint. The API key stays in memory for this page only and is sent only in the Authorization header. Your provider may log data or charge you. Scripted rehearsal sends nothing and is not live AI.</p>
+    <div class="form-grid">
+     <label>Mode<select id="mode"><option value="rehearsal">Scripted rehearsal (offline)</option><option value="live">Live BYO-AI</option></select></label>
+     <label>Endpoint<input id="endpoint" type="url" placeholder="https://provider.example/v1/chat/completions" autocomplete="off"></label>
+     <label>Model<input id="model" placeholder="model name" autocomplete="off" maxlength="120"></label>
+     <label>Optional API key<input id="api-key" type="password" autocomplete="off" placeholder="session only"></label>
+    </div>
+    <label class="consent"><input id="consent" type="checkbox"> I authorize each manual live transmission and understand provider data handling and charges may apply.</label>
+    <div class="actions"><button id="apply">Apply connection</button><button id="cancel" class="quiet" disabled>Cancel request</button></div>
+    <p id="connection-status" class="status">Connection not applied.</p>
+   </details>
+
+   <div class="statusbar"><div class="reserve"><strong id="hour-status">6 hours remain</strong><div id="hour-pips" class="pips" aria-hidden="true"></div></div><span>Each answered question costs one hour. Serve whenever you are ready; serve before the bell.</span></div>
+   <ul id="roster" class="roster" aria-label="Delegate status">
+    <li data-delegate="highland"><span class="rname">Envoy Maret Ilsk · Highland Clans</span><span class="badge">Not yet asked</span></li>
+    <li data-delegate="delta"><span class="rname">Chancellor Oru Venn · Delta Assembly</span><span class="badge">Not yet asked</span></li>
+   </ul>
+   <div class="columns">
+    <section class="panel radio"><p class="eyebrow">Antechamber</p><h2>Question a delegate</h2>
+     <label>Delegate<select id="delegate"><option value="highland">Envoy Maret Ilsk · Highland Clans</option><option value="delta">Chancellor Oru Venn · Delta Assembly</option></select></label>
+     <label>Your question<textarea id="question" maxlength="400" rows="3">What can you never eat?</textarea></label>
+     <button id="ask">Ask</button><p id="notice" class="status" aria-live="polite">Apply a connection before asking.</p><div id="dialogue" class="dialogue" aria-live="polite"></div>
+    </section>
+    <section class="panel decision"><p class="eyebrow">Pantry</p><h2>Compose the shared meal</h2>
+     <p class="disclosure">Choose exactly three ingredients. A delegate's taboo on the table ends the treaty; both feast dishes on the table seals it.</p>
+     <div id="pantry" class="pantry" role="group" aria-label="Pantry ingredients"></div>
+     <p id="menu-status" class="status">0/3 chosen</p>
+     <button id="serve">Serve the meal</button><div id="ending" class="ending" tabindex="-1" hidden></div><button id="restart" class="quiet">Start a new banquet</button>
+    </section>
+   </div>
+  </section>
+ </main>
+ <script src="game.js"></script><script src="provider.js"></script><script src="app.js"></script>
+</body>
+</html>
