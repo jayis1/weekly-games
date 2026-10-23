@@ -43,4 +43,5 @@ Friday/Saturday: feature freeze on this loop; add a small player dossier (per-de
 
 - Launch source/build: open `games/2026-W43-treaty-kitchen/index.html`.
 - Status: in development; no release/tag created (kickoff stage).
-- Source destination: `git@github.com:jayis1/weekly-games.git`, branch `main`. Remote SHA recorded below after push.
+- Source destination: `git@github.com:jayis1/weekly-games.git`, branch `main`.
+- Kickoff commit `cf4b39eb974af1c24675849a0068146e92ce6689` pushed; `git ls-remote origin refs/heads/main` returned the same SHA (verified 2026-10-23). No task branches exist locally or remotely.
