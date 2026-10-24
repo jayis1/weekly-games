@@ -4,14 +4,14 @@ Author: jayis1
 
 A compact negotiation puzzle. Two rival delegations sit down to one shared meal in the Neutral Hall tonight, and you are the cook. Question each delegate through your own AI provider about what they can never eat, what would honour their people, and what they would rather not — then compose a three-ingredient menu that keeps both at the table. Serve a taboo and the treaty collapses; put both feast dishes on the table and it is signed.
 
-Status: IN DEVELOPMENT (2026-W43, feature freeze). Core loop playable and edge-case hardened; not released.
+Status: IN DEVELOPMENT (2026-W43, feature freeze; Friday QA pass complete). Core loop playable, edge-case hardened and QA-exercised in headless Chromium; not released.
 
 ## How to play
 
 Open `index.html` directly in a modern browser (Chromium/Chrome verified). No server, build step, or runtime dependency.
 
 1. Light the stove and apply a connection (scripted rehearsal, or live BYO-AI with your own endpoint/model/key).
-2. You have six hours. Every answered question costs one hour. Ask Envoy Maret Ilsk (Highland Clans) and Chancellor Oru Venn (Delta Assembly) what they can never eat, what would honour them, or how they feel about a named ingredient.
+2. You have six hours. Every answered question costs one hour (Ctrl+Enter in the question box also asks; the game is fully keyboard-playable). Ask Envoy Maret Ilsk (Highland Clans) and Chancellor Oru Venn (Delta Assembly) what they can never eat, what would honour them, or how they feel about a named ingredient.
 3. Pick exactly three of seven pantry ingredients and serve. Endings: **The table empties** (a taboo was served), **A grudging accord** (no taboo, but a delegation's feast dish was missing), **Treaty signed** (both feast dishes, no taboo).
 4. Start a new banquet to play again.
 
@@ -39,7 +39,7 @@ Each delegate has a distinct persona and bounded, character-specific knowledge (
 ## Known limitations
 
 - No live AI model/provider test has been run: no authorized credentials or paid-test budget. Scripted rehearsal and the local HTTP fixture are not live-model evidence.
-- No human playtest, non-Chromium browser, touch device, audio, or save-system verification.
+- No human playtest, non-Chromium browser, or touch-device verification. There is no audio, pause or save system by design (turn-based, nothing runs between inputs; a page reload starts a fresh banquet and forgets the connection).
 - Frozen scope: no dossier/notes panel (the dialogue log keeps every answer on screen), no audio, no save system.
 
 ## License and assets

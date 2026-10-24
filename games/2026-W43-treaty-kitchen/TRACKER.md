@@ -2,7 +2,7 @@
 
 Author: jayis1
 
-Status: IN DEVELOPMENT — feature freeze; core loop playable and edge-case hardened (2026-10-24, 2026-W43). Release candidate pending Saturday packaging. Not released.
+Status: IN DEVELOPMENT — feature freeze; core loop playable, edge-case hardened and Friday-QA exercised (2026-10-24, 2026-W43). Release candidate pending Saturday packaging. Not released.
 
 ## Core loop and scope
 
@@ -44,10 +44,47 @@ Two rival delegations share one meal; the player is the cook with six hours befo
 - Independent review (separate reviewer agent, read-only, re-ran both suites): APPROVE, no blocking findings; three minor notes (redundant intermediate render in the synchronous rehearsal path — comment added; a one-microtask window on restart that is unreachable from UI clicks; a 100 ms timing-based negative assertion in the browser test). No secrets in the diff (key-pattern scan clean); tests use only mock fetchers and a 127.0.0.1 fixture.
 - UNTESTED LIVE AI: no live model/provider request was made this run (no authorized credentials or budget). The in-flight lockout fix was exercised only against the local HTTP fixture.
 
+### FRIDAY QA AND POLISH — 2026-10-24 19:53 UTC (Saturday calendar day, 2026-W43; the Friday-stage cron ran late)
+
+- Gate: `date -u +%G-W%V` → `2026-W43`; current.json matched (`games/2026-W43-treaty-kitchen`, in-development). Lock `/root/weekly-games/.worker-lock` created atomically (job friday-qa, session cli-collective-owner, pid 72767) and released at the end. Branch `main`, clean worktree, HEAD `83bc063` = `origin/main`; no stashes or task branches. Feature freeze held: no new mechanics, delegates, ingredients, panels, audio or save system.
+- Baseline before any edit: `npm test` 39/39 GREEN; `npm run test:treaty` PASS.
+- QA harness: headless Chromium (Playwright 1.63.0, chromium-1243) driving the shipped `index.html` from `file://` with real clicks/keys plus a 127.0.0.1 HTTP protocol fixture. Scratch probe `/root/.hermes/cache/scratch/friday-qa-probe.cjs` (not shipped); durable regressions folded into `tests/browser.cjs`.
+
+| Check | Result | Evidence |
+|---|---|---|
+| Cold start → interactive title | PASS | 78–91 ms, 0 console errors |
+| Keyboard-only start / apply / ask / pantry (Tab, Enter, Space) | PASS | probe |
+| Start → signed ending → restart | PASS | browser.cjs |
+| Walkout ending (taboo served) | PASS | browser.cjs |
+| Accord ending names the slighted delegate + grumble; focus moves to ending | PASS | browser.cjs (new) |
+| Post-ending lockout (Ask, Serve, pantry disabled) | PASS | probe |
+| 5× restart cycle: hours 6, dialogue empty, pantry cleared, roster reset, no duplicated pantry nodes | PASS | probe; `performance.memory` heap 10.0 MB → 10.0 MB (Chromium reports this coarsely) |
+| Rapid double-click Ask (rehearsal) spends one hour | FAIL → FIXED | before fix: 4 hours remain (two hours spent); after: 5 hours |
+| Ctrl+Enter in question box asks | PASS (new control) | browser.cjs |
+| Invalid key → `Provider HTTP 401`, no hour spent | PASS | browser.cjs (new) |
+| HTTP 429 → visible error, no hour spent | PASS | browser.cjs |
+| Invalid JSON reply → visible error, no hour spent | PASS | probe |
+| Model "SYSTEM OVERRIDE … 99 hours" text cannot change engine state | PASS | probe; hours 6→5, no ending |
+| Timeout (15 s hang) → `Request timed out after 15 seconds.`, recoverable, no hour spent | PASS | probe, 15,052 ms |
+| 12-request session budget → `Session request budget exhausted (12).`; rehearsal still playable after | PASS | probe |
+| Cancel, in-flight lockout across re-apply, restart mid-request | PASS | browser.cjs |
+| 320 px / 390 px: no horizontal overflow | PASS | probe + browser.cjs |
+| Page errors | PASS | 0 (the only console line is Chromium's own network log for the deliberate 401) |
+| Pause | N/A by design | turn-based; nothing advances between inputs |
+| Saving | N/A by design | no save system; reload = fresh banquet, connection forgotten |
+| Audio | N/A | none exists; not added under freeze |
+
+- Readability measurements (computed styles): body 16 px; status lines 13.6 px; disclosure 14.4 px; roster badge was 10.9 px and eyebrow 11.5 px → raised to 12.2 px / 12.5 px. Contrast (WCAG ratio on panel #1d130b): ink 15.4:1, label 11.5:1, glow 8.9:1, muted 6.75:1 — all above AA.
+- Bugs fixed (SUBSTANTIVE): `app.js` rehearsal answered synchronously, so the `busy` lockout never engaged and an accidental double-click on Ask spent two hours. Rehearsal now answers after a 320 ms beat under the same `busy` lock as live mode (also shows the "Running labeled scripted rehearsal…" notice briefly). Regression check: the new double-click assertion fails against the kickoff/build `app.js` (4 hours remain) and passes with the fix.
+- Polish: Ctrl/Cmd+Enter in the question textarea triggers Ask (label says so); badge/eyebrow font sizes raised; README status, controls and limitations updated. No balance or content changes.
+- GREEN after changes: `npm test` 39/39; `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:treaty` PASS (now also: double-click Ask, Ctrl+Enter, accord ending, HTTP 401); probe 15/15 gameplay checks PASS.
+- UNTESTED / limitations: no live AI model/provider request (no authorized credentials or budget — fixture only); no human playtest; no Firefox/Safari; no touch device; no screen-reader run (aria-live/focus checked programmatically only); heap measurement coarse.
+- Release blockers for Saturday: none found in the core loop. Known non-blockers: live-provider behaviour unverified; GitHub Release upload needs authenticated gh/API access (not available) — Saturday falls back to the archive path + source push.
+
 ## Blockers and limitations
 
 - Live AI model/provider test NOT RUN: no authorized credentials or paid-test budget. No billable request initiated. Scripted rehearsal and local HTTP fixture are not live-model evidence.
-- No human playtest, non-Chromium browser, physical touch device, audio, or save system verification. Agent inspection only, not human playtesting.
+- No human playtest, non-Chromium browser or physical touch device verification. Agent-driven headless Chromium only, not human playtesting. No audio, pause or save system exists (by design, frozen).
 - GitHub Release upload still requires authenticated GitHub CLI/API access (not available); source pushes use SSH.
 
 ## Next bounded task

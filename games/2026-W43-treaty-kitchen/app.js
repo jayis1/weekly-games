@@ -1,7 +1,9 @@
 (()=>{
  'use strict';
  const G=globalThis.TreatyKitchenGame,P=globalThis.TreatyKitchenAI;
- let state=G.fresh(),config=null,client=new P.Client(),generation=0,busy=null; // busy: mode of the request in flight, or null (only observable in live mode; rehearsal resolves synchronously)
+ let state=G.fresh(),config=null,client=new P.Client(),generation=0,busy=null; // busy: mode of the in-flight request, or null
+ const REHEARSAL_DELAY=320; // ms: the scripted rehearsal answers after a short beat so Ask locks like live mode (a double-click cannot spend two hours)
+ const beat=ms=>new Promise(resolve=>setTimeout(resolve,ms));
  const $=selector=>document.querySelector(selector);
  const elements={game:$('#game'),status:$('#hour-status'),pips:$('#hour-pips'),statusbar:$('.statusbar'),notice:$('#notice'),dialogue:$('#dialogue'),ask:$('#ask'),cancel:$('#cancel'),connection:$('#connection-status'),ending:$('#ending'),pantry:$('#pantry'),menuStatus:$('#menu-status'),serve:$('#serve')};
  function setNotice(text){elements.notice.textContent=text;}
@@ -69,7 +71,7 @@
   busy=mode;render();
   setNotice(mode==='live'?'Asking your provider…':'Running labeled scripted rehearsal…');
   try{
-   const reply=mode==='live'?await client.ask(config,G.messages(state,delegateId,question)):G.rehearsal(delegateId,question);
+   const reply=mode==='live'?await client.ask(config,G.messages(state,delegateId,question)):(await beat(REHEARSAL_DELAY),G.rehearsal(delegateId,question));
    if(requestGeneration!==generation)return;
    const outcome=G.recordAsk(state,delegateId);
    G.remember(state,delegateId,question,reply);
@@ -79,6 +81,7 @@
   finally{if(requestGeneration===generation){busy=null;render();}}
  });
  elements.cancel.addEventListener('click',()=>client.cancel());
+ $('#question').addEventListener('keydown',event=>{if(event.key==='Enter'&&(event.ctrlKey||event.metaKey)&&!elements.ask.disabled){event.preventDefault();elements.ask.click();}});
  elements.serve.addEventListener('click',()=>{
   try{
    const outcome=G.serve(state,chosenMenu());

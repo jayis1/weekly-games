@@ -15,6 +15,7 @@ const http=require('node:http');
    requests.push({body:JSON.parse(body),authorization:req.headers.authorization});
    if(responseMode==='hang')return;
    if(responseMode==='error'){res.writeHead(429);res.end('private fixture body');return;}
+  if(responseMode==='unauthorized'){res.writeHead(401);res.end('{"error":"bad key"}');return;}
    res.setHeader('Content-Type','application/json');res.end(JSON.stringify({choices:[{message:{content:'<img src=x onerror=alert(1)> The river fish is sacred to the clans.'}}]}));
   });
  });
@@ -56,6 +57,18 @@ const http=require('node:http');
   await page.getByRole('button',{name:'Serve the meal'}).click();
   assert.match(await page.locator('#ending').innerText(),/table empties/);
   await page.getByRole('button',{name:'Start a new banquet'}).click();
+  // Friday QA: a double-click on Ask spends exactly one hour (rehearsal now locks Ask like live mode).
+  await page.locator('#question').fill('Good evening.');await page.locator('#ask').dblclick();await idle();
+  assert.match(await page.locator('#hour-status').innerText(),/5 hours remain/);
+  // Friday QA: Ctrl+Enter in the question box asks; the accord ending names the slighted delegate.
+  await page.locator('#question').fill('What would honour your people?');await page.locator('#question').press('Control+Enter');await idle();
+  assert.match(await page.locator('#hour-status').innerText(),/4 hours remain/);assert.match(await page.locator('#dialogue').innerText(),/saffron rice/i);
+  for(const id of ['rice','barley','cheese'])await page.locator(`#pantry input[value="${id}"]`).check();
+  await page.getByRole('button',{name:'Serve the meal'}).click();
+  const accord=await page.locator('#ending').innerText();
+  assert.match(accord,/grudging accord/);assert.match(accord,/Maret Ilsk wanted/);assert.match(accord,/picks around the goat cheese/);
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'ending');
+  await page.getByRole('button',{name:'Start a new banquet'}).click();
 
   // Live mode: invalid endpoint clears key and reports error.
   await page.locator('#mode').selectOption('live');
@@ -87,6 +100,9 @@ const http=require('node:http');
   // HTTP 429 recovery: no hour spent.
   responseMode='error';const before=await page.locator('#hour-status').innerText();await askButton().click();await idle();
   assert.match(await page.locator('#notice').innerText(),/HTTP 429/);assert.equal(await page.locator('#hour-status').innerText(),before);
+  // Friday QA: invalid key → visible HTTP 401, no hour spent.
+  responseMode='unauthorized';await askButton().click();await idle();
+  assert.match(await page.locator('#notice').innerText(),/HTTP 401/);assert.equal(await page.locator('#hour-status').innerText(),before);
   // Cancellation recovery.
   responseMode='hang';await askButton().click();await page.getByRole('button',{name:'Cancel request'}).click();await idle();
   assert.match(await page.locator('#notice').innerText(),/cancelled/i);assert.equal(await page.locator('#hour-status').innerText(),before);
@@ -122,7 +138,7 @@ const http=require('node:http');
   assert(await page.locator('#ask').isEnabled());
   await page.setViewportSize({width:390,height:844});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   assert.deepEqual(pageErrors,[]);
-  console.log('PASS Chromium: rehearsal treaty-signed/walkout/restart; pantry limit; two delegates through local protocol fixture; key isolation; XSS-as-text; consent gate; HTTP recovery; cancellation; in-flight lockout across re-apply; restart mid-request; zero-hour bell then serve; responsive layout; no page errors.');
+  console.log('PASS Chromium: rehearsal treaty-signed/walkout/restart; pantry limit; two delegates through local protocol fixture; key isolation; XSS-as-text; consent gate; HTTP recovery; cancellation; in-flight lockout across re-apply; restart mid-request; zero-hour bell then serve; double-click Ask spends one hour; Ctrl+Enter asks; accord ending; HTTP 401 recovery; responsive layout; no page errors.');
   console.log('Local fixture and scripted rehearsal only — no live AI model tested.');
  }finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});
