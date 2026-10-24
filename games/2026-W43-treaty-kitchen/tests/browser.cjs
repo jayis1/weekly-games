@@ -90,10 +90,39 @@ const http=require('node:http');
   // Cancellation recovery.
   responseMode='hang';await askButton().click();await page.getByRole('button',{name:'Cancel request'}).click();await idle();
   assert.match(await page.locator('#notice').innerText(),/cancelled/i);assert.equal(await page.locator('#hour-status').innerText(),before);
+  // Edge case: while a live request is in flight, Ask and Serve stay locked even if the
+  // connection is re-applied; Cancel is available; cancelling restores both controls.
+  responseMode='hang';await askButton().click();
+  assert(await page.locator('#ask').isDisabled());assert(await page.locator('#serve').isDisabled());assert(await page.locator('#cancel').isEnabled());
+  await page.getByRole('button',{name:'Apply connection'}).click();
+  assert(await page.locator('#ask').isDisabled());assert(await page.locator('#serve').isDisabled());assert(await page.locator('#cancel').isEnabled());
+  await page.getByRole('button',{name:'Cancel request'}).click();await idle();
+  assert(await page.locator('#serve').isEnabled());assert(await page.locator('#cancel').isDisabled());
+  assert.equal(await page.locator('#hour-status').innerText(),before);
+  // Edge case: restart during an in-flight request discards the reply and clears Cancel.
+  await askButton().click();assert(await page.locator('#cancel').isEnabled());
+  await page.getByRole('button',{name:'Start a new banquet'}).click();await idle();
+  assert(await page.locator('#cancel').isDisabled());assert(await page.locator('#serve').isEnabled());
+  assert.match(await page.locator('#hour-status').innerText(),/6 hours remain/);
+  assert.equal(await page.locator('#dialogue .turn').count(),0);
   responseMode='ok';
+  const liveRequestsBefore=requests.length;
+  await new Promise(resolve=>setTimeout(resolve,100));
+  assert.equal(requests.length,liveRequestsBefore);
+  // Edge case: zero-hour bell. Spend all six hours in rehearsal; Ask locks, Serve still works.
+  await page.locator('#mode').selectOption('rehearsal');await page.getByRole('button',{name:'Apply connection'}).click();
+  for(let i=0;i<6;i++){await page.locator('#question').fill('Good evening.');await askButton().click();await page.waitForFunction(h=>document.querySelector('#hour-status').innerText!==h,`${6-i} hour${6-i===1?'':'s'} remain`);}
+  assert.match(await page.locator('#hour-status').innerText(),/0 hours remain/);
+  assert.match(await page.locator('#notice').innerText(),/banquet bell rings/);
+  assert(await page.locator('#ask').isDisabled());assert(await page.locator('#serve').isEnabled());
+  for(const id of ['rice','lentils','cheese'])await page.locator(`#pantry input[value="${id}"]`).check();
+  await page.getByRole('button',{name:'Serve the meal'}).click();
+  assert.match(await page.locator('#ending').innerText(),/Treaty signed/);assert.match(await page.locator('#ending').innerText(),/picks around the goat cheese/);
+  await page.getByRole('button',{name:'Start a new banquet'}).click();
+  assert(await page.locator('#ask').isEnabled());
   await page.setViewportSize({width:390,height:844});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   assert.deepEqual(pageErrors,[]);
-  console.log('PASS Chromium: rehearsal treaty-signed/walkout/restart; pantry limit; two delegates through local protocol fixture; key isolation; XSS-as-text; consent gate; HTTP recovery; cancellation; responsive layout; no page errors.');
+  console.log('PASS Chromium: rehearsal treaty-signed/walkout/restart; pantry limit; two delegates through local protocol fixture; key isolation; XSS-as-text; consent gate; HTTP recovery; cancellation; in-flight lockout across re-apply; restart mid-request; zero-hour bell then serve; responsive layout; no page errors.');
   console.log('Local fixture and scripted rehearsal only — no live AI model tested.');
  }finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

@@ -54,6 +54,7 @@
   validateAsk(state,delegateId);
   state.hours--;
   state.delegates[delegateId].asked++;
+  if(state.hours===0)return {kind:'asked',text:`${DELEGATES[delegateId].name} answers. The banquet bell rings \u2014 no more questions; serve the meal.`};
   return {kind:'asked',text:`${DELEGATES[delegateId].name} answers. ${state.hours} hour${state.hours===1?'':'s'} remain.`};
  }
  function remember(state,delegateId,question,answer){
@@ -88,8 +89,8 @@
   if(named.length){
    return named.slice(0,2).map(id=>{
     const v=delegate.verdicts[id]||'neutral';
-    const reason=delegate.reasons[id]?` \u2014 ${delegate.reasons[id]}`:'';
-    return `${INGREDIENTS[id].name}? ${VERDICT_LINES[v]}${reason}.`;
+    const reason=delegate.reasons[id]?` \u2014 ${delegate.reasons[id]}.`:'';
+    return `${INGREDIENTS[id].name}? ${VERDICT_LINES[v]}${reason}`;
    }).join(' ');
   }
   const byKind=kind=>Object.keys(delegate.verdicts).find(id=>delegate.verdicts[id]===kind);

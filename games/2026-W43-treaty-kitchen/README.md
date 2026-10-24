@@ -4,7 +4,7 @@ Author: jayis1
 
 A compact negotiation puzzle. Two rival delegations sit down to one shared meal in the Neutral Hall tonight, and you are the cook. Question each delegate through your own AI provider about what they can never eat, what would honour their people, and what they would rather not — then compose a three-ingredient menu that keeps both at the table. Serve a taboo and the treaty collapses; put both feast dishes on the table and it is signed.
 
-Status: IN DEVELOPMENT (2026-W43 kickoff). Core loop playable; not released.
+Status: IN DEVELOPMENT (2026-W43, feature freeze). Core loop playable and edge-case hardened; not released.
 
 ## How to play
 
@@ -40,7 +40,7 @@ Each delegate has a distinct persona and bounded, character-specific knowledge (
 
 - No live AI model/provider test has been run: no authorized credentials or paid-test budget. Scripted rehearsal and the local HTTP fixture are not live-model evidence.
 - No human playtest, non-Chromium browser, touch device, audio, or save-system verification.
-- Kickoff scope only: no dossier/notes panel yet, no audio, no save system.
+- Frozen scope: no dossier/notes panel (the dialogue log keeps every answer on screen), no audio, no save system.
 
 ## License and assets
 

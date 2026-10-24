@@ -1,7 +1,7 @@
 (()=>{
  'use strict';
  const G=globalThis.TreatyKitchenGame,P=globalThis.TreatyKitchenAI;
- let state=G.fresh(),config=null,client=new P.Client(),generation=0;
+ let state=G.fresh(),config=null,client=new P.Client(),generation=0,busy=null; // busy: mode of the request in flight, or null (only observable in live mode; rehearsal resolves synchronously)
  const $=selector=>document.querySelector(selector);
  const elements={game:$('#game'),status:$('#hour-status'),pips:$('#hour-pips'),statusbar:$('.statusbar'),notice:$('#notice'),dialogue:$('#dialogue'),ask:$('#ask'),cancel:$('#cancel'),connection:$('#connection-status'),ending:$('#ending'),pantry:$('#pantry'),menuStatus:$('#menu-status'),serve:$('#serve')};
  function setNotice(text){elements.notice.textContent=text;}
@@ -28,8 +28,9 @@
   const menu=chosenMenu();
   elements.menuStatus.textContent=`${menu.length}/${G.MENU_SIZE} chosen`;
   elements.pantry.querySelectorAll('input').forEach(input=>{input.disabled=state.ended;});
-  elements.ask.disabled=state.ended||state.hours<=0||!config;
-  elements.serve.disabled=state.ended;
+  elements.ask.disabled=busy!==null||state.ended||state.hours<=0||!config;
+  elements.cancel.disabled=busy!=='live';
+  elements.serve.disabled=busy!==null||state.ended;
  }
  function addTurn(delegateId,question,reply){
   const turn=document.createElement('div');turn.className='turn';
@@ -64,18 +65,18 @@
    if(config.mode==='live'&&!$('#consent').checked)throw new Error('Authorize live transmissions before each request.');
    G.validateAsk(state,delegateId);
   }catch(error){setNotice(error.message);return;}
-  const requestGeneration=generation;
-  elements.ask.disabled=true;elements.cancel.disabled=config.mode!=='live';
-  setNotice(config.mode==='live'?'Asking your provider…':'Running labeled scripted rehearsal…');
+  const requestGeneration=generation,mode=config.mode;
+  busy=mode;render();
+  setNotice(mode==='live'?'Asking your provider…':'Running labeled scripted rehearsal…');
   try{
-   const reply=config.mode==='live'?await client.ask(config,G.messages(state,delegateId,question)):G.rehearsal(delegateId,question);
+   const reply=mode==='live'?await client.ask(config,G.messages(state,delegateId,question)):G.rehearsal(delegateId,question);
    if(requestGeneration!==generation)return;
    const outcome=G.recordAsk(state,delegateId);
    G.remember(state,delegateId,question,reply);
    addTurn(delegateId,question,reply);
    setNotice(outcome.text);
   }catch(error){if(requestGeneration===generation)setNotice(error.message);}
-  finally{if(requestGeneration===generation){elements.cancel.disabled=true;render();}}
+  finally{if(requestGeneration===generation){busy=null;render();}}
  });
  elements.cancel.addEventListener('click',()=>client.cancel());
  elements.serve.addEventListener('click',()=>{
@@ -89,7 +90,7 @@
   }catch(error){setNotice(error.message);}
  });
  $('#restart').addEventListener('click',()=>{
-  generation++;client.cancel();state=G.fresh();
+  generation++;client.cancel();busy=null;state=G.fresh();
   elements.dialogue.replaceChildren();elements.ending.hidden=true;elements.ending.replaceChildren();
   elements.pantry.querySelectorAll('input').forEach(input=>{input.checked=false;});
   setNotice('A new banquet begins. Connection choice remains for this page session.');render();

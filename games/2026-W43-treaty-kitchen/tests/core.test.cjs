@@ -158,3 +158,44 @@ test('provider failures, cancellation, concurrency, size and budgets are recover
  const oversized=new P.Client(async()=>new Response('{}'),50);
  await assert.rejects(()=>oversized.ask(cfg,[{role:'user',content:'y'.repeat(7000)}]),/input budget/);
 });
+
+test('edge cases: zero-hour bell, serve at zero hours, repeated serve, duplicate menu',()=>{
+ const s=G.fresh();
+ for(let i=0;i<5;i++)G.recordAsk(s,'highland');
+ const last=G.recordAsk(s,'delta');
+ assert.equal(s.hours,0);
+ assert.match(last.text,/banquet bell rings/);
+ assert.throws(()=>G.validateAsk(s,'delta'),/banquet bell/);
+ // Serving is still allowed when the hours are gone; the engine ends the game once only.
+ const outcome=G.serve(s,['rice','lentils','barley']);
+ assert.equal(outcome.code,'signed');
+ assert.equal(s.ended,true);
+ assert.throws(()=>G.serve(s,['rice','lentils','barley']),/already served/);
+ assert.throws(()=>G.recordAsk(s,'highland'),/already served/);
+ assert.throws(()=>G.validateMenu(['rice','rice','barley']),/once/);
+ assert.throws(()=>G.validateMenu('rice'),/Choose ingredients/);
+ assert.throws(()=>G.validateMenu(['rice','lentils','barley','figs']),/exactly 3/);
+});
+
+test('edge cases: longest possible question and full memory stay inside the provider input budget',async()=>{
+ const s=G.fresh();
+ const longQuestion='q'.repeat(400),longAnswer='a'.repeat(900);
+ for(let i=0;i<6;i++)G.remember(s,'delta',longQuestion,longAnswer);
+ assert.equal(s.delegates.delta.memory.length,4);
+ assert.equal(s.delegates.delta.memory[0].question.length,240);
+ assert.equal(s.delegates.delta.memory[0].answer.length,500);
+ const messages=G.messages(s,'delta','z'.repeat(1000));
+ assert.equal(messages.length,10);
+ assert.equal(messages[messages.length-1].content.length,400);
+ assert(JSON.stringify(messages).length<6000);
+ let sent=null;
+ const client=new P.Client(async(url,options)=>{sent=JSON.parse(options.body);return new Response(JSON.stringify({choices:[{message:{content:'ok'}}]}));},50);
+ await client.ask({endpoint:'https://example.test/v1/chat/completions',model:'m'},messages);
+ assert.equal(sent.messages.length,10);
+ // Rehearsal handles long, empty and unusual input without throwing.
+ assert.match(G.rehearsal('highland',longQuestion),/Ask me plainly/);
+ assert.match(G.rehearsal('highland',''),/Ask me plainly/);
+ const three=G.rehearsal('delta','TROUT? FIGS? RICE?');
+ assert.match(three,/Saffron rice\? That would honour/);assert.match(three,/River trout\? I have no objection to it\.$/);
+ assert.doesNotMatch(three,/Honey figs/);assert.doesNotMatch(three,/\.\./);
+});
