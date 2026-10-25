@@ -96,9 +96,15 @@ Two rival delegations share one meal; the player is the cook with six hours befo
 - Release upload: `gh auth status` → not logged in; no GitHub Release/tag created. Archive delivered as the absolute path above.
 - UNTESTED: live AI provider (no credentials/budget); human playtest; Firefox/Safari/touch; audio/pause/save do not exist by design.
 
+### SUNDAY REVIEW — 2026-10-25 20:09 UTC (Sunday, ISO 2026-W43)
+
+- Gate: `date -u +%G-W%V` → `2026-W43`; current.json matched (`games/2026-W43-treaty-kitchen`, released). Lock `/root/weekly-games/.worker-lock` created atomically (job sunday-review, session cli-collective-owner, pid 73326) and released at the end. HEAD `7952193` = `origin/main`, clean worktree, only branch `main`.
+- Read-only review; zero gameplay/engine/provider/test/catalog/current.json changes. Re-ran `npm test` 39/39 GREEN and `npm run test:treaty` PASS (fixture/rehearsal only); recomputed archive SHA-256 (match), `zipfile.testzip()` clean, 7 entries.
+- Wrote `RETROSPECTIVE.md`: delivered vs planned, proven failures (three async UI-lock bugs fixed pre-release; GitHub Release auth blocker for the fourth cycle; stage crons on wrong weekdays, W40–W42 skipped), untested assumptions (fun, live model, information integrity through model text, non-Chromium, clean machine), lessons, four next-week candidates (proposals only).
+
 ## Next bounded task
 
-Sunday read-only retrospective of the released W43 scope (RETROSPECTIVE.md; lessons and next-week candidates). Do not expand W43 scope. Outstanding validation that requires authorization: a bounded live-provider check and a human playtest; GitHub Release publication requires authenticated gh/API access.
+W43 is closed. No W43 scope expansion. Outstanding validation that requires authorization: a bounded live-provider check and a human playtest; GitHub Release publication requires authenticated gh/API access. Next week's project starts only at a Monday kickoff from the retrospective candidates, after the user decides on cron timing and release authentication.
 
 ## Release paths and remote status
 
