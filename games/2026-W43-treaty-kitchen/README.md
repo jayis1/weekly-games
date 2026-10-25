@@ -4,7 +4,19 @@ Author: jayis1
 
 A compact negotiation puzzle. Two rival delegations sit down to one shared meal in the Neutral Hall tonight, and you are the cook. Question each delegate through your own AI provider about what they can never eat, what would honour their people, and what they would rather not — then compose a three-ingredient menu that keeps both at the table. Serve a taboo and the treaty collapses; put both feast dishes on the table and it is signed.
 
-Status: IN DEVELOPMENT (2026-W43, feature freeze; Friday QA pass complete). Core loop playable, edge-case hardened and QA-exercised in headless Chromium; not released.
+Status: RELEASED 2026-10-25 (2026-W43, v0.1.0). Self-contained browser build packaged as `treaty-kitchen-2026-W43-browser.zip`; core loop, edge cases and provider protocol verified in headless Chromium. Live-model behaviour and human playtesting remain unverified (see Known limitations).
+
+## Launch (from the release archive)
+
+1. Unzip `treaty-kitchen-2026-W43-browser.zip` anywhere.
+2. Open `index.html` in Chromium/Chrome (double-click or `File → Open`). No server, install or network access is needed to play the scripted rehearsal.
+3. Optional live AI: in-game, enter your own OpenAI-compatible endpoint, model and (optional) key, accept the data/cost notice, and apply. Your provider may bill you for each request (max 12 per session, 180 output tokens each).
+
+## Controls
+
+- Mouse/keyboard: buttons and the pantry are Tab/Enter/Space reachable; Ctrl+Enter (Cmd+Enter) in the question box asks.
+- Ask: pick a delegate, type a question, press Ask. Each answer costs one hour (six per banquet).
+- Serve: select exactly three pantry ingredients, press Serve. Start a new banquet to restart.
 
 ## How to play
 
@@ -39,6 +51,7 @@ Each delegate has a distinct persona and bounded, character-specific knowledge (
 ## Known limitations
 
 - No live AI model/provider test has been run: no authorized credentials or paid-test budget. Scripted rehearsal and the local HTTP fixture are not live-model evidence.
+- No GitHub Release asset was published (no authenticated GitHub CLI/API access); the archive is delivered directly and the source is on `main`.
 - No human playtest, non-Chromium browser, or touch-device verification. There is no audio, pause or save system by design (turn-based, nothing runs between inputs; a page reload starts a fresh banquet and forgets the connection).
 - Frozen scope: no dossier/notes panel (the dialogue log keeps every answer on screen), no audio, no save system.
 

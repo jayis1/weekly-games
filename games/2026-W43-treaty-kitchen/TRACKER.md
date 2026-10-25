@@ -2,7 +2,7 @@
 
 Author: jayis1
 
-Status: IN DEVELOPMENT — feature freeze; core loop playable, edge-case hardened and Friday-QA exercised (2026-10-24, 2026-W43). Release candidate pending Saturday packaging. Not released.
+Status: RELEASED v0.1.0 — 2026-10-25 (Sunday UTC, still ISO 2026-W43; the Saturday-stage cron ran late). Self-contained browser archive `artifacts/treaty-kitchen-2026-W43-browser.zip` verified by integrity test and a clean-extraction headless-Chromium playthrough. Live-model behaviour and human playtest remain unverified; no GitHub Release asset published (no authenticated gh/API access).
 
 ## Core loop and scope
 
@@ -85,16 +85,25 @@ Two rival delegations share one meal; the player is the cook with six hours befo
 
 - Live AI model/provider test NOT RUN: no authorized credentials or paid-test budget. No billable request initiated. Scripted rehearsal and local HTTP fixture are not live-model evidence.
 - No human playtest, non-Chromium browser or physical touch device verification. Agent-driven headless Chromium only, not human playtesting. No audio, pause or save system exists (by design, frozen).
-- GitHub Release upload still requires authenticated GitHub CLI/API access (not available); source pushes use SSH.
+- GitHub Release upload blocked: `gh auth status` → "You are not logged into any GitHub hosts"; no tag/asset published. Source is on the approved SSH remote; the archive is retained locally under `artifacts/` (gitignored) for direct delivery.
+
+### SATURDAY RELEASE — 2026-10-25 08:01 UTC (Sunday calendar day, ISO 2026-W43; the Saturday-stage cron ran late)
+
+- Gate: `date -u +%G-W%V` → `2026-W43` (weekday 7); current.json matched (`games/2026-W43-treaty-kitchen`, in-development). Lock `/root/weekly-games/.worker-lock` created atomically (job saturday-release, session cli-collective-owner, pid 15435) and released at the end. Branch `main`, clean worktree, HEAD `31463db` = `origin/main` (`git ls-remote`); no stashes or task branches. Feature freeze held: zero gameplay/engine/provider code changes this run; only README/TRACKER/current.json/catalog status text plus launch/controls sections.
+- Baseline (unchanged code): `npm test` 39/39 GREEN; `PLAYWRIGHT_BROWSERS_PATH=/root/weekly-games/.cache/ms-playwright npm run test:treaty` PASS (rehearsal signed/walkout/restart, pantry limit, two delegates via 127.0.0.1 protocol fixture with distinct system prompts, key isolation, XSS-as-text, consent gate, 401/429 recovery, cancel, in-flight lockout, restart mid-request, zero-hour bell, double-click Ask, Ctrl+Enter, accord ending, 320/390 px layout, zero page errors).
+- Packaging: allowlisted seven files (`index.html`, `style.css`, `game.js`, `provider.js`, `app.js`, `README.md`, `LICENSE`) staged into a scratch dir and zipped with Python `zipfile` (the `zip` binary is not installed) under the top-level folder `treaty-kitchen-2026-W43/`. Artifact `/root/weekly-games/artifacts/treaty-kitchen-2026-W43-browser.zip`, 14,491 bytes, 7 entries, 33,292 bytes uncompressed. `unzip -t`: "No errors detected". SHA-256 `384c6a8097ef75678606184477969032abbb3e951a663fcd58c789bff775a27c` (also written to `artifacts/treaty-kitchen-2026-W43-browser.zip.sha256`). Credential-signature scan of the staged tree (sk-/ghp_/github_pat_/PRIVATE KEY/AKIA patterns): no matches. No `.git`, tests, caches or env files in the archive.
+- Clean-extraction runtime smoke (scratch probe `tk-release-smoke.cjs`, not shipped): archive unzipped to a fresh temp dir; headless Chromium (Playwright 1.63.0, chromium-1243) opened `index.html` over `file://` with every non-`file://` request aborted. Cold start → title → "Light the stove" in 141 ms; rehearsal applied ("offline demonstration, not live AI" label shown); four questions revealed trout/lentils/figs/rice and left 2 hours; menu lentils+rice+cheese → **Treaty signed** with the "picks around the goat cheese" grumble; Ask/Serve locked after the ending; restart → 6 hours, empty dialogue, pantry cleared; trout menu → **The table empties**. 0 page/console errors, 0 blocked network requests. PASS. (A first probe run produced the walkout ending because the probe itself picked trout as the third ingredient — engine behaved correctly; probe fixed, not the game.)
+- Release upload: `gh auth status` → not logged in; no GitHub Release/tag created. Archive delivered as the absolute path above.
+- UNTESTED: live AI provider (no credentials/budget); human playtest; Firefox/Safari/touch; audio/pause/save do not exist by design.
 
 ## Next bounded task
 
-Saturday release stage: final test pass (`npm test`, `npm run test:treaty`), package `artifacts/treaty-kitchen-2026-W43-browser.zip` (index.html, style.css, game.js, provider.js, app.js, README.md, LICENSE), `unzip -t` and required-entry/credential-signature scans, record SHA-256, set README/TRACKER/current.json/catalog status to released, commit and push, verify remote SHA, deliver the archive path with launch steps. No scope additions.
+Sunday read-only retrospective of the released W43 scope (RETROSPECTIVE.md; lessons and next-week candidates). Do not expand W43 scope. Outstanding validation that requires authorization: a bounded live-provider check and a human playtest; GitHub Release publication requires authenticated gh/API access.
 
 ## Release paths and remote status
 
-- Launch source/build: open `games/2026-W43-treaty-kitchen/index.html`.
-- Status: in development; no release/tag created (kickoff stage).
+- Launch release: unzip `/root/weekly-games/artifacts/treaty-kitchen-2026-W43-browser.zip` (SHA-256 `384c6a80…a27c`) and open `treaty-kitchen-2026-W43/index.html`; or open `games/2026-W43-treaty-kitchen/index.html` from source.
+- Status: released v0.1.0 (2026-10-25); archive local only — no GitHub Release/tag (auth unavailable).
 - Source destination: `git@github.com:jayis1/weekly-games.git`, branch `main`.
 - Kickoff commit `cf4b39eb974af1c24675849a0068146e92ce6689` pushed; `git ls-remote origin refs/heads/main` returned the same SHA (verified 2026-10-23). No task branches exist locally or remotely.
 - BUILD 2026-10-24: edge-case hardening commit `b9660fe1e2bc0efd3783c37a81324b6c989843de` pushed; `git ls-remote origin refs/heads/main` returned the same SHA (verified 2026-10-24). No task branches exist locally or remotely.
